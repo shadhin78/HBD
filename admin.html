@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Birthday Wishing Site</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <!-- Tailwind CSS to style checkboxes and flavor selection -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Retain original theme bg animations */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #090214 0%, #020005 100%);
+      color: #f8fafc;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="p-6">
+
+  <!-- PASSWORD PROTECTION OVERLAY -->
+  <div id="login-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 px-6">
+    <div class="bg-gray-900 border border-purple-500/20 rounded-3xl p-8 w-full max-w-md shadow-2xl text-center">
+      <div class="text-4xl mb-3">🔒</div>
+      <h2 class="text-2xl font-bold mb-2">Enter Admin Password</h2>
+      <p class="text-gray-400 text-sm mb-6">Please enter the secret code to edit this wishing site.</p>
+      
+      <form id="login-form" class="space-y-4">
+        <input type="password" id="admin-password" placeholder="Enter password..." required class="w-full px-4 py-3 bg-black border border-purple-500/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-center" autofocus>
+        <div id="login-error" class="text-rose-500 text-xs font-semibold"></div>
+        <button type="submit" class="w-full py-3 bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg">Unlock Admin Panel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD CONTENT -->
+  <div id="dashboard-container" class="max-w-5xl mx-auto hidden space-y-8 pt-8">
+    <header class="flex items-center justify-between border-b border-gray-800 pb-6">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl">🎨</span>
+        <div>
+          <h1 class="text-3xl font-extrabold tracking-tight">Wisher Dashboard</h1>
+          <p class="text-gray-400 text-sm">Customize the birthday wishing page configuration</p>
+        </div>
+      </div>
+      <button id="logout-btn" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl active:scale-95 transition-all text-sm">Lock Panel</button>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- FORM COLUMN -->
+      <section class="lg:col-span-7">
+        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-xl space-y-6">
+          <div>
+            <h2 class="text-2xl font-bold">Configuration Details</h2>
+            <p class="text-gray-400 text-sm">Change details below to customize the birthday site.</p>
+          </div>
+          
+          <form id="config-form" class="space-y-5">
+            <!-- Recipient Name -->
+            <div class="space-y-1">
+              <label for="recipient-name-input" class="block text-sm font-bold text-gray-300">Birthday Star's Name</label>
+              <input type="text" id="recipient-name-input" placeholder="e.g., Alice, Alex, John" required class="w-full px-4 py-2.5 bg-black border border-gray-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+            </div>
+
+            <!-- Age Input -->
+            <div class="space-y-1">
+              <label for="recipient-age-input" class="block text-sm font-bold text-gray-300">Age (Years)</label>
+              <input type="number" id="recipient-age-input" placeholder="e.g., 21" min="1" max="150" required class="w-full px-4 py-2.5 bg-black border border-gray-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+            </div>
+
+            <!-- Theme Style -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-300">Choose Theme Style</label>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="flex items-center gap-3 p-3 bg-black border border-gray-800 rounded-xl cursor-pointer hover:bg-gray-800 transition">
+                  <input type="radio" name="gender" value="pastel" required class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                  <span class="text-xs font-semibold">🌸 Pastel Magic</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-black border border-gray-800 rounded-xl cursor-pointer hover:bg-gray-800 transition">
+                  <input type="radio" name="gender" value="neon" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                  <span class="text-xs font-semibold">🌌 Midnight Neon</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-black border border-gray-800 rounded-xl cursor-pointer hover:bg-gray-800 transition">
+                  <input type="radio" name="gender" value="gold" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                  <span class="text-xs font-semibold">👑 Royal Gold</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-black border border-gray-800 rounded-xl cursor-pointer hover:bg-gray-800 transition">
+                  <input type="radio" name="gender" value="emerald" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                  <span class="text-xs font-semibold">🌲 Emerald Forest</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Cake Customizer options -->
+            <div class="space-y-3 border-t border-gray-800 pt-4">
+              <label class="block text-sm font-bold text-gray-300">Cake Simulator Customizer 🎂</label>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <span class="block text-xs font-bold text-gray-400 mb-1">Frosting Flavor</span>
+                  <select id="cake-flavor" class="w-full px-4 py-2.5 bg-black border border-gray-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                    <option value="strawberry">🍓 Strawberry</option>
+                    <option value="chocolate">🍫 Chocolate</option>
+                    <option value="matcha">🍵 Matcha</option>
+                    <option value="vanilla">🍦 Vanilla</option>
+                  </select>
+                </div>
+                <div class="flex flex-col justify-center gap-2">
+                  <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-400">
+                    <input type="checkbox" id="sprinkles-toggle" checked class="w-4 h-4 text-purple-600 bg-black border-gray-800 rounded">
+                    <span>Include Sprinkles</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-400">
+                    <input type="checkbox" id="berries-toggle" checked class="w-4 h-4 text-purple-600 bg-black border-gray-800 rounded">
+                    <span>Include Extra Berries</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Greeting / Personal message -->
+            <div class="space-y-1 border-t border-gray-800 pt-4">
+              <label for="hbd-message-input" class="block text-sm font-bold text-gray-300">Personal Wishing Message</label>
+              <textarea id="hbd-message-input" rows="4" placeholder="Enter personalized birthday wish message..." required class="w-full px-4 py-2.5 bg-black border border-gray-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm resize-none"></textarea>
+              <div class="text-right text-xs text-gray-500 mt-1"><span id="hbd-count">0</span> chars</div>
+            </div>
+
+            <!-- Status Alert Message -->
+            <div id="save-status" class="p-3 text-sm font-semibold rounded-xl text-center hidden"></div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="save-btn" class="w-full py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
+              <span class="btn-text">Save & Publish Changes</span>
+              <span class="spinner hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- LIVE PREVIEW & SHARING COLUMN -->
+      <section class="lg:col-span-5 space-y-6">
+        <!-- SHARING LINK CARD -->
+        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-xl space-y-4">
+          <h2 class="text-2xl font-bold">Share Wishing Page</h2>
+          <p class="text-gray-400 text-sm">Copy the link below and send it to the birthday person!</p>
+          
+          <div class="flex items-center gap-2 bg-black border border-gray-800 rounded-xl p-1.5 pl-4">
+            <input type="text" id="share-url" readonly value="http://localhost:3000/" class="bg-transparent border-none text-white focus:outline-none text-xs w-full">
+            <button id="copy-link-btn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs active:scale-95 transition-all">Copy</button>
+          </div>
+          <div id="copy-success" class="text-emerald-500 text-xs font-semibold text-center hidden">Link copied to clipboard!</div>
+          
+          <div class="pt-2">
+            <a href="index.html" target="_blank" class="w-full py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl active:scale-95 transition-all flex items-center justify-center gap-2 text-sm text-center">
+              <span>Open Public Wishing Site</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- QUICK GUIDELINE CARD -->
+        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-xl space-y-4">
+          <h2 class="text-2xl font-bold">Quick Guidelines</h2>
+          <ul class="space-y-4 text-sm leading-relaxed text-gray-400">
+            <li class="flex gap-3">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold shrink-0">1</span>
+              <div>
+                <strong class="text-white">Theme Selection</strong>
+                <p class="text-xs mt-0.5">Pastel, Midnight Neon, Royal Gold, or Emerald Forest. Each theme loads unique colors, typography, and floating particle shapes!</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold shrink-0">2</span>
+              <div>
+                <strong class="text-white">Interactive Cake</strong>
+                <p class="text-xs mt-0.5">Select a flavor like Chocolate or Strawberry. Viewers can blow out the candles via mic or tap them to play happy birthday chime music!</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold shrink-0">3</span>
+              <div>
+                <strong class="text-white">Real-Time Sync</strong>
+                <p class="text-xs mt-0.5">When you click Save, active wish pages will update instantly on all browsers without refreshing the page.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
