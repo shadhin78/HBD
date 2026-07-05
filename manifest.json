@@ -1,0 +1,17 @@
+{
+  "name": "Ultimate Birthday Wish Experience",
+  "short_name": "BirthdayWish",
+  "description": "Interactive cross-device synchronized birthday wish page",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#090314",
+  "theme_color": "#db2777",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

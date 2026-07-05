@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#db2777;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- Background Card -->
+  <rect width="512" height="512" rx="128" fill="url(#grad)" />
+  <!-- Stylized Cake and Candle -->
+  <g filter="url(#shadow)" transform="translate(106, 100)">
+    <!-- Base Plate -->
+    <ellipse cx="150" cy="240" rx="130" ry="20" fill="#f1f5f9"/>
+    
+    <!-- Base Cake Layer -->
+    <path d="M 30,190 A 120,20 0 0 0 270,190 L 270,230 A 120,20 0 0 1 30,230 Z" fill="#92400e"/>
+    
+    <!-- Top Cake Layer -->
+    <path d="M 50,130 A 100,16 0 0 0 250,130 L 250,180 A 100,16 0 0 1 50,180 Z" fill="#ec4899"/>
+    <ellipse cx="150" cy="130" rx="100" ry="16" fill="#fbcfe8"/>
+    
+    <!-- Frosting drip details -->
+    <path d="M 50,130 Q 70,145 90,130 Q 110,145 130,130 Q 150,145 170,130 Q 190,145 210,130 Q 230,145 250,130 L 250,140 Q 230,155 210,140 Q 190,155 170,140 Q 150,155 130,140 Q 110,155 90,140 Q 70,155 50,140 Z" fill="#f472b6"/>
+    
+    <!-- Candle -->
+    <rect x="144" y="60" width="12" height="60" rx="4" fill="#60a5fa"/>
+    <path d="M 144,70 L 156,65 L 156,75 Z" fill="#ffffff" opacity="0.4"/>
+    
+    <!-- Flame -->
+    <path d="M 150,20 C 138,40 144,55 150,58 C 156,55 162,40 150,20 Z" fill="#fbbf24"/>
+    <path d="M 150,32 C 145,45 147,53 150,55 C 153,53 155,45 150,32 Z" fill="#f97316"/>
+  </g>
+</svg>
