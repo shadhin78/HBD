@@ -6,13 +6,13 @@
     <title>Ultimate Birthday Wish Experience! ✨</title>
     <!-- Web App Manifest for PWA Installability -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#db2777">
+    <meta name="theme-color" content="#7c3aed">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter, Pacifico & Comic Neue -->
+    <!-- Google Fonts: Inter (body), Outfit (interface) & Syne (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Pacifico&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&family=Syne:wght@700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -20,78 +20,82 @@
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
-        .font-cursive {
-            font-family: 'Pacifico', cursive;
+        .font-display {
+            font-family: 'Syne', sans-serif;
         }
-        .font-game {
-            font-family: 'Comic Neue', cursive;
+        .font-serif-elegant {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+        .font-interface {
+            font-family: 'Outfit', sans-serif;
         }
         
         .transition-all-300 {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Float Animations */
+        /* Float Animations for SVGs */
         @keyframes float-slow {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-12px) rotate(4deg) scale(1.05); }
         }
         @keyframes float-medium {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(-5deg); }
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-20px) rotate(-6deg) scale(0.95); }
         }
         .animate-float-1 { animation: float-slow 6s ease-in-out infinite; }
         .animate-float-2 { animation: float-medium 5s ease-in-out infinite; }
         .animate-float-3 { animation: float-slow 7s ease-in-out infinite 1s; }
 
-        /* Pulse and glow animation for candles */
+        /* Pulse and glow animation for candle flames */
         @keyframes pulse-glow {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.8)); }
-            50% { transform: scale(1.15); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 1)); }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.7)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.95)); }
         }
-        .animate-glow { animation: pulse-glow 1.5s infinite; }
+        .animate-glow { animation: pulse-glow 1.4s infinite; }
 
         /* Gift box lid opening animation */
         @keyframes open-lid {
             0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-70px) rotate(-18deg) scale(0.9); opacity: 0; }
+            100% { transform: translateY(-80px) rotate(-15deg) scale(0.85); opacity: 0; }
         }
         .lid-open {
-            animation: open-lid 1.2s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: open-lid 1.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Themes Configuration variables */
+        /* Sophisticated Themes Configuration */
         .theme-pastel {
-            --bg-gradient: linear-gradient(135deg, #fef08a 0%, #fda4af 50%, #c084fc 100%);
-            --card-bg: rgba(255, 255, 255, 0.25);
-            --card-border: rgba(255, 255, 255, 0.4);
-            --text-main: #4c1d95;
-            --accent-color: #ec4899;
-            --accent-hover: #db2777;
+            --bg-gradient: linear-gradient(135deg, #fafaf9 0%, #fae8ff 50%, #e0f2fe 100%);
+            --card-bg: rgba(255, 255, 255, 0.3);
+            --card-border: rgba(255, 255, 255, 0.45);
+            --text-main: #3b0764;
+            --accent-color: #d946ef;
+            --accent-hover: #c084fc;
         }
         .theme-neon {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-            --card-bg: rgba(15, 23, 42, 0.6);
-            --card-border: rgba(139, 92, 246, 0.3);
-            --text-main: #f8fafc;
+            --bg-gradient: linear-gradient(135deg, #09090b 0%, #180828 50%, #030712 100%);
+            --card-bg: rgba(24, 24, 27, 0.55);
+            --card-border: rgba(168, 85, 247, 0.25);
+            --text-main: #fafafa;
             --accent-color: #a855f7;
             --accent-hover: #c084fc;
         }
         .theme-gold {
-            --bg-gradient: linear-gradient(135deg, #171717 0%, #262626 50%, #451a03 100%);
-            --card-bg: rgba(38, 38, 38, 0.7);
-            --card-border: rgba(234, 179, 8, 0.3);
-            --text-main: #fef08a;
-            --accent-color: #eab308;
-            --accent-hover: #ca8a04;
+            --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #1c1917 50%, #0c0a09 100%);
+            --card-bg: rgba(28, 25, 23, 0.65);
+            --card-border: rgba(217, 119, 6, 0.25);
+            --text-main: #fef3c7;
+            --accent-color: #d97706;
+            --accent-hover: #f59e0b;
         }
         .theme-emerald {
-            --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #065f46 100%);
-            --card-bg: rgba(2, 44, 34, 0.6);
-            --card-border: rgba(52, 211, 153, 0.3);
+            --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #022c22 100%);
+            --card-bg: rgba(2, 44, 34, 0.55);
+            --card-border: rgba(16, 185, 129, 0.25);
             --text-main: #ecfdf5;
             --accent-color: #10b981;
-            --accent-hover: #059669;
+            --accent-hover: #34d399;
         }
 
         .active-theme-container {
@@ -103,37 +107,58 @@
         .theme-glass-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Professional Piano Key styling */
         .piano-key {
-            transition: transform 0.1s ease, background-color 0.15s ease;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .piano-key::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.15s ease;
         }
         .piano-key:active {
-            transform: scaleY(0.95);
+            transform: translateY(2px) scale(0.97);
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        .piano-key:active::after {
+            opacity: 1;
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.05);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--accent-color);
-            border-radius: 4px;
+            border-radius: 6px;
+            opacity: 0.6;
         }
 
         /* Sparkle trailing particle styling */
         .sparkle-particle {
             position: absolute;
-            background: radial-gradient(circle, #fff, var(--accent-color));
+            background: radial-gradient(circle, #fff 10%, var(--accent-color) 80%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 100;
-            box-shadow: 0 0 10px var(--accent-color), 0 0 20px #fff;
+            box-shadow: 0 0 8px var(--accent-color);
         }
     </style>
 </head>
@@ -146,71 +171,84 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm"></div>
 
     <!-- Quick action floating tools -->
-    <div class="fixed bottom-5 left-5 z-40 flex flex-col gap-3">
+    <div class="fixed bottom-5 left-5 z-40 flex flex-col gap-3 font-interface">
         <!-- Background music / Sound toggler -->
-        <button id="sound-toggle-btn" class="p-3.5 bg-white/20 hover:bg-white/40 active:scale-95 border border-white/30 backdrop-blur-md rounded-full shadow-lg transition-all text-sm font-bold flex items-center gap-2 cursor-pointer" title="Synthesizer Sound On/Off">
+        <button id="sound-toggle-btn" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/25 backdrop-blur-lg rounded-xl shadow-lg transition-all text-xs font-semibold flex items-center gap-2 cursor-pointer text-inherit" title="Synthesizer Sound On/Off">
             <span id="sound-icon">🔊</span> <span class="text">Synth Sound</span>
         </button>
         <!-- Blow detection micro status indicator -->
-        <button id="mic-toggle-btn" class="p-3.5 bg-white/20 hover:bg-white/40 active:scale-95 border border-white/30 backdrop-blur-md rounded-full shadow-lg transition-all text-sm font-bold flex items-center gap-2 cursor-pointer" title="Enable microphone to blow out candles!">
+        <button id="mic-toggle-btn" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/25 backdrop-blur-lg rounded-xl shadow-lg transition-all text-xs font-semibold flex items-center gap-2 cursor-pointer text-inherit" title="Enable microphone to blow out candles!">
             <span id="mic-icon">🎙️</span> Mic Blow: Off
         </button>
     </div>
 
     <!-- Settings Dashboard Links -->
-    <div class="fixed top-5 right-5 z-40 flex gap-2">
-        <a href="admin.html" class="flex items-center gap-2 px-4 py-2.5 bg-white/20 hover:bg-white/40 active:scale-95 border border-white/30 backdrop-blur-md rounded-full shadow-lg transition-all text-sm font-semibold cursor-pointer text-inherit no-underline">
+    <div class="fixed top-5 right-5 z-40 flex gap-2 font-interface">
+        <a href="admin.html" class="flex items-center gap-2 px-4.5 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/25 backdrop-blur-lg rounded-xl shadow-lg transition-all text-xs font-semibold cursor-pointer text-inherit no-underline">
             🎨 Admin Dashboard
         </a>
     </div>
 
     <!-- Main Content Container -->
-    <main class="relative z-10 max-w-5xl mx-auto px-4 pt-16 md:pt-24 space-y-16">
+    <main class="relative z-10 max-w-5xl mx-auto px-4 pt-16 md:pt-28 space-y-20">
 
         <!-- Hero Greeting Section -->
-        <section class="text-center space-y-6">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 border border-white/30 backdrop-blur-md text-sm font-medium animate-bounce shadow-sm">
-                🎉 Interactive Birthday Wish Page
+        <section class="text-center space-y-8">
+            <div class="font-interface inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-xs font-semibold tracking-wider uppercase opacity-80 shadow-sm">
+                ✨ Celebration Space
             </div>
             
-            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tight drop-shadow-sm select-none">
+            <h1 class="text-6xl md:text-9xl font-extrabold tracking-tight drop-shadow-sm select-none font-display uppercase leading-none">
                 Happy Birthday, <br class="md:hidden">
-                <span id="display-name" class="font-cursive text-pink-600 block mt-2 text-6xl md:text-9xl drop-shadow-md transition-all duration-500">Star</span>
+                <span id="display-name" class="font-serif-elegant text-pink-600 block mt-3 normal-case tracking-normal transition-all duration-500">Star</span>
             </h1>
 
-            <p id="display-age-banner" class="text-2xl md:text-3xl font-bold tracking-wide opacity-90">
-                Cheers to <span id="display-age" class="underline decoration-wavy decoration-pink-500">21</span> Amazing Years! 🥳
+            <p id="display-age-banner" class="text-xl md:text-2xl font-semibold tracking-widest uppercase opacity-85 font-interface">
+                Cheers to <span id="display-age" class="underline decoration-wavy decoration-pink-500 font-bold">21</span> Brilliant Years
             </p>
 
-            <div class="max-w-xl mx-auto p-6 rounded-2xl theme-glass-card leading-relaxed text-lg md:text-xl font-medium shadow-md">
-                " <span id="display-message">Wishing you a day filled with laughter, love, cake, and endless magic. Happy Birthday!</span> "
+            <div class="max-w-2xl mx-auto p-8 rounded-2xl theme-glass-card leading-relaxed text-lg md:text-xl font-medium shadow-md italic">
+                " <span id="display-message" class="not-italic">Wishing you a day filled with laughter, love, cake, and endless magic. Happy Birthday!</span> "
             </div>
 
-            <!-- Visual Floating Decoratives -->
-            <div class="flex justify-center gap-12 text-5xl md:text-6xl pt-4">
-                <span class="animate-float-1 inline-block select-none">🎈</span>
-                <span class="animate-float-2 inline-block select-none">🎁</span>
-                <span class="animate-float-3 inline-block select-none">✨</span>
-                <span class="animate-float-1 inline-block select-none">🎂</span>
-                <span class="animate-float-2 inline-block select-none">🧸</span>
+            <!-- Premium Floating Decoratives -->
+            <div class="flex justify-center gap-16 pt-4 relative min-h-[80px]">
+                <!-- Floating Star -->
+                <svg class="animate-float-1 w-10 h-10 text-inherit opacity-75" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <!-- Floating Diamond -->
+                <svg class="animate-float-2 w-9 h-9 text-inherit opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polygon points="12 2 22 8.5 12 22 2 8.5 12 2"/>
+                </svg>
+                <!-- Floating Circle Ring -->
+                <svg class="animate-float-3 w-10 h-10 text-inherit opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="4"/>
+                </svg>
+                <!-- Floating Cross -->
+                <svg class="animate-float-1 w-8 h-8 text-inherit opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <line x1="12" y1="2" x2="12" y2="22"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                </svg>
             </div>
         </section>
 
         <!-- Interactive Birthday Cake & Game Section -->
-        <section class="theme-glass-card rounded-3xl p-8 max-w-2xl mx-auto text-center space-y-8 relative overflow-hidden shadow-2xl">
-            <div class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold bg-white/20 rounded-full border border-white/20">
-                Smart Cake Simulator 3.0
+        <section class="theme-glass-card rounded-3xl p-8 md:p-12 max-w-2xl mx-auto text-center space-y-8 relative overflow-hidden shadow-2xl">
+            <div class="absolute top-3 left-3 px-3 py-1 text-2xs tracking-widest font-bold uppercase bg-white/10 rounded-full border border-white/10 font-interface">
+                Cake Simulator 3.0
             </div>
             
-            <div class="space-y-2 pt-4">
-                <h2 class="text-3xl font-extrabold tracking-tight">Blow out the Candles! 🕯️</h2>
+            <div class="space-y-3 pt-6">
+                <h2 class="text-3xl font-extrabold tracking-tight font-display uppercase">Blow out the Candles 🕯️</h2>
                 <p class="text-sm opacity-80 max-w-md mx-auto">
-                    Blow hard into your microphone to extinguish the candles, or click them! When all candles go out, prepare for a lovely musical celebration.
+                    Make a wish. Blow hard into your microphone to extinguish the candles, or click them.
                 </p>
                 <!-- Mic Blow Status Indicator bar -->
                 <div id="mic-level-container" class="hidden max-w-xs mx-auto pt-2">
-                    <span class="text-xs text-gray-500 block mb-1">Microphone Blowing Intensity</span>
-                    <div class="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                    <span class="text-xs text-gray-500 block mb-1 font-interface font-medium">Microphone Intensity</span>
+                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div id="mic-level-bar" class="h-full bg-emerald-500 transition-all duration-75" style="width: 0%"></div>
                     </div>
                 </div>
@@ -220,31 +258,32 @@
             <div class="relative py-12 flex flex-col items-center justify-center min-h-[300px]">
                 
                 <!-- The Candles Container -->
-                <div class="flex justify-center gap-8 md:gap-12 mb-[-15px] z-20">
+                <div class="flex justify-center gap-8 md:gap-12 mb-[-12px] z-20">
                     <!-- Candle 1 -->
-                    <div id="candle-1" class="group flex flex-col items-center cursor-pointer transform hover:scale-110 transition-transform">
-                        <div id="flame-1" class="w-5 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-200 rounded-full animate-glow transform origin-bottom"></div>
-                        <div class="w-1 h-2 bg-gray-600"></div>
-                        <div class="w-4 h-16 bg-gradient-to-r from-pink-400 via-pink-300 to-pink-500 rounded-t shadow-md relative overflow-hidden">
-                            <div class="absolute inset-0 bg-white/30 rotate-12 transform scale-y-150"></div>
+                    <div id="candle-1" class="group flex flex-col items-center cursor-pointer transform hover:scale-105 transition-all duration-350">
+                        <div id="flame-1" class="w-4 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-100 rounded-full animate-glow transform origin-bottom"></div>
+                        <div class="w-0.5 h-1.5 bg-gray-700"></div>
+                        <!-- Sleek metallic striped candle -->
+                        <div class="w-3.5 h-20 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-t shadow-md relative overflow-hidden">
+                            <div class="absolute inset-0 bg-white/20 rotate-45 transform scale-y-150"></div>
                         </div>
                     </div>
 
                     <!-- Candle 2 -->
-                    <div id="candle-2" class="group flex flex-col items-center cursor-pointer transform hover:scale-110 transition-transform">
-                        <div id="flame-2" class="w-5 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-200 rounded-full animate-glow transform origin-bottom"></div>
-                        <div class="w-1 h-2 bg-gray-600"></div>
-                        <div class="w-4 h-20 bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500 rounded-t shadow-md relative overflow-hidden">
-                            <div class="absolute inset-0 bg-white/30 -rotate-12 transform scale-y-150"></div>
+                    <div id="candle-2" class="group flex flex-col items-center cursor-pointer transform hover:scale-105 transition-all duration-350">
+                        <div id="flame-2" class="w-4 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-100 rounded-full animate-glow transform origin-bottom"></div>
+                        <div class="w-0.5 h-1.5 bg-gray-700"></div>
+                        <div class="w-3.5 h-24 bg-gradient-to-r from-slate-400 via-slate-200 to-slate-500 rounded-t shadow-md relative overflow-hidden">
+                            <div class="absolute inset-0 bg-white/20 -rotate-45 transform scale-y-150"></div>
                         </div>
                     </div>
 
                     <!-- Candle 3 -->
-                    <div id="candle-3" class="group flex flex-col items-center cursor-pointer transform hover:scale-110 transition-transform">
-                        <div id="flame-3" class="w-5 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-200 rounded-full animate-glow transform origin-bottom"></div>
-                        <div class="w-1 h-2 bg-gray-600"></div>
-                        <div class="w-4 h-16 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 rounded-t shadow-md relative overflow-hidden">
-                            <div class="absolute inset-0 bg-white/30 rotate-12 transform scale-y-150"></div>
+                    <div id="candle-3" class="group flex flex-col items-center cursor-pointer transform hover:scale-105 transition-all duration-350">
+                        <div id="flame-3" class="w-4 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-100 rounded-full animate-glow transform origin-bottom"></div>
+                        <div class="w-0.5 h-1.5 bg-gray-700"></div>
+                        <div class="w-3.5 h-20 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-t shadow-md relative overflow-hidden">
+                            <div class="absolute inset-0 bg-white/20 rotate-45 transform scale-y-150"></div>
                         </div>
                     </div>
                 </div>
@@ -252,121 +291,127 @@
                 <!-- Cake Plate and Layers -->
                 <div class="w-72 md:w-96 relative z-10">
                     <!-- Top Frosting & Topping -->
-                    <div id="cake-toppings" class="w-full h-8 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full shadow-inner relative flex justify-around items-center px-6">
-                        <span class="text-sm topping-berry">🍓</span>
-                        <span class="text-sm topping-berry">🍓</span>
-                        <span class="text-sm topping-berry">🍓</span>
-                        <span class="text-sm topping-berry">🍓</span>
+                    <div id="cake-toppings" class="w-full h-8 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full shadow-inner relative flex justify-around items-center px-8 transition-all duration-500">
+                        <!-- Luxury Macarons/Pearls replace raw strawberries -->
+                        <span class="w-5.5 h-4.5 bg-pink-300 rounded-full border border-pink-400 flex items-center justify-center text-[8px] font-bold text-pink-700 topping-berry shadow-inner">🍬</span>
+                        <span class="w-5.5 h-4.5 bg-pink-300 rounded-full border border-pink-400 flex items-center justify-center text-[8px] font-bold text-pink-700 topping-berry shadow-inner">🍬</span>
+                        <span class="w-5.5 h-4.5 bg-pink-300 rounded-full border border-pink-400 flex items-center justify-center text-[8px] font-bold text-pink-700 topping-berry shadow-inner">🍬</span>
+                        <span class="w-5.5 h-4.5 bg-pink-300 rounded-full border border-pink-400 flex items-center justify-center text-[8px] font-bold text-pink-700 topping-berry shadow-inner">🍬</span>
                     </div>
 
-                    <!-- Top Layer Body -->
-                    <div id="cake-layer-top" class="w-[96%] mx-auto h-20 bg-gradient-to-r from-pink-300 via-pink-400 to-pink-500 rounded-b-xl shadow-lg relative overflow-hidden -mt-4 border-b-4 border-pink-600/30 transition-all duration-500">
-                        <div class="absolute top-0 left-0 w-full h-4 bg-pink-100/40 rounded-full"></div>
-                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-white font-extrabold tracking-widest text-lg drop-shadow select-none">CELEBRATE</div>
+                    <!-- Top Layer Body (Minimalist gourmet design) -->
+                    <div id="cake-layer-top" class="w-[96%] mx-auto h-20 bg-gradient-to-r from-pink-300 via-pink-400 to-pink-500 rounded-b-xl shadow-lg relative overflow-hidden -mt-4 border-b-2 border-pink-600/20 transition-all duration-500">
+                        <div class="absolute top-0 left-0 w-full h-3 bg-pink-100/30 rounded-full"></div>
+                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/95 font-display font-extrabold tracking-widest text-base select-none">CELEBRATE</div>
                     </div>
 
-                    <!-- Middle Frosting Separation -->
-                    <div class="w-full h-6 bg-yellow-100 rounded-full relative -mt-3 z-10 shadow-sm"></div>
+                    <!-- Middle Cream Separation -->
+                    <div class="w-full h-5 bg-yellow-50/90 rounded-full relative -mt-3.5 z-10 shadow-sm"></div>
 
                     <!-- Base Cake Layer -->
-                    <div id="cake-layer-base" class="w-full h-24 bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 rounded-b-2xl shadow-xl relative overflow-hidden -mt-3 border-b-8 border-amber-900/40 transition-all duration-500">
-                        <div class="absolute top-0 left-0 w-full h-4 bg-yellow-200/30 rounded-full"></div>
-                        <!-- Sprinkles visually styled container -->
-                        <div id="cake-sprinkles" class="absolute inset-0 flex flex-wrap justify-between p-4 opacity-40 pointer-events-none">
-                            <div class="w-1 h-3 bg-red-400 rounded-full rotate-45"></div>
-                            <div class="w-1 h-3 bg-yellow-400 rounded-full -rotate-45"></div>
-                            <div class="w-1 h-3 bg-blue-400 rounded-full rotate-12"></div>
-                            <div class="w-1 h-3 bg-pink-400 rounded-full -rotate-12"></div>
-                            <div class="w-1 h-3 bg-white rounded-full rotate-45"></div>
-                            <div class="w-1 h-3 bg-purple-400 rounded-full -rotate-45"></div>
+                    <div id="cake-layer-base" class="w-full h-24 bg-gradient-to-r from-stone-700 via-stone-800 to-stone-900 rounded-b-2xl shadow-xl relative overflow-hidden -mt-3 border-b-4 border-stone-950/20 transition-all duration-500">
+                        <div class="absolute top-0 left-0 w-full h-3 bg-stone-100/10 rounded-full"></div>
+                        <!-- Sprinkles styled as glowing gold flakes/leafs -->
+                        <div id="cake-sprinkles" class="absolute inset-0 flex flex-wrap justify-between p-4 opacity-75 pointer-events-none">
+                            <div class="w-1.5 h-2.5 bg-amber-400 rounded-sm rotate-45 shadow-sm"></div>
+                            <div class="w-1 h-3 bg-amber-300 rounded-sm -rotate-12 shadow-sm"></div>
+                            <div class="w-2 h-1 bg-amber-500 rounded-sm rotate-60 shadow-sm"></div>
+                            <div class="w-1.5 h-2.5 bg-amber-400 rounded-sm -rotate-45 shadow-sm"></div>
+                            <div class="w-1 h-3 bg-amber-200 rounded-sm rotate-30 shadow-sm"></div>
                         </div>
                     </div>
 
-                    <!-- Serving Plate -->
-                    <div class="w-[110%] -ml-[5%] h-6 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 rounded-full shadow-2xl relative -mt-3 border-b-4 border-slate-400/50"></div>
+                    <!-- Glass Serving Plate -->
+                    <div class="w-[110%] -ml-[5%] h-5 bg-gradient-to-r from-white/20 via-white/40 to-white/10 rounded-full shadow-2xl relative -mt-3 border-b border-white/20 backdrop-blur-md"></div>
                 </div>
             </div>
 
             <!-- Cake Status / Interaction Messages -->
-            <div id="cake-status-msg" class="text-lg font-bold text-center text-rose-500 animate-pulse">
+            <div id="cake-status-msg" class="text-sm font-bold text-center tracking-wider uppercase font-interface text-rose-500 opacity-90 animate-pulse">
                 🕯️ 3 candles waiting to be blown out!
             </div>
             
-            <button id="reset-candles-btn" class="text-xs font-semibold px-3 py-1.5 bg-white/20 rounded-full border border-white/30 hover:bg-white/30 transition-all">
-                Reset & Light Candles Again 🔥
+            <button id="reset-candles-btn" class="font-interface text-xs font-semibold px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full border border-white/20 transition-all">
+                Reset & Relight Candles 🔥
             </button>
         </section>
 
         <!-- Interactive Synthesizer Section -->
-        <section class="theme-glass-card rounded-3xl p-8 max-w-2xl mx-auto text-center space-y-6 relative overflow-hidden shadow-2xl">
-            <div class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold bg-white/20 rounded-full border border-white/20">
-                Play Melody Keypad 🎹
+        <section class="theme-glass-card rounded-3xl p-8 md:p-12 max-w-2xl mx-auto text-center space-y-6 relative overflow-hidden shadow-2xl">
+            <div class="absolute top-3 left-3 px-3 py-1 text-2xs tracking-widest font-bold uppercase bg-white/10 rounded-full border border-white/10 font-interface">
+                Melody Deck 🎹
             </div>
             
-            <div class="space-y-2 pt-4">
-                <h3 class="text-2xl font-extrabold tracking-tight">Mini Synth Keyboard</h3>
-                <p class="text-xs opacity-80">
-                    Play a song for the birthday person! Below is a functional mini synth. Tip: Play <b class="font-bold underline text-amber-500">C4 - C4 - D4 - C4 - F4 - E4</b> for "Happy Birthday".
+            <div class="space-y-2 pt-6">
+                <h3 class="text-2xl font-extrabold tracking-tight font-display uppercase">Interactive Synthesizer</h3>
+                <p class="text-xs opacity-80 max-w-md mx-auto">
+                    Play a celebration tone. Keys: <b class="font-bold underline text-pink-500">C4 - C4 - D4 - C4 - F4 - E4</b> for Happy Birthday.
                 </p>
             </div>
 
-            <div class="flex justify-center select-none overflow-x-auto pb-2">
-                <div class="inline-flex rounded-xl overflow-hidden border border-black/20 bg-white/10 p-2 shadow-inner">
-                    <button data-note="C4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 rounded-l-lg font-bold flex flex-col justify-end pb-3 text-xs shadow-md">C4</button>
-                    <button data-note="D4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 font-bold flex flex-col justify-end pb-3 text-xs shadow-md">D4</button>
-                    <button data-note="E4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 font-bold flex flex-col justify-end pb-3 text-xs shadow-md">E4</button>
-                    <button data-note="F4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 font-bold flex flex-col justify-end pb-3 text-xs shadow-md">F4</button>
-                    <button data-note="G4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 font-bold flex flex-col justify-end pb-3 text-xs shadow-md">G4</button>
-                    <button data-note="A4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 font-bold flex flex-col justify-end pb-3 text-xs shadow-md">A4</button>
-                    <button data-note="B4" class="piano-key w-12 h-36 bg-white hover:bg-gray-100 text-gray-900 border-r border-gray-300 font-bold flex flex-col justify-end pb-3 text-xs shadow-md">B4</button>
-                    <button data-note="C5" class="piano-key w-12 h-36 bg-white hover:bg-yellow-100 text-gray-900 rounded-r-lg font-bold flex flex-col justify-end pb-3 text-xs shadow-md">C5</button>
+            <!-- Futuristic Glowing Pad Deck (Replaces toy keyboard) -->
+            <div class="flex justify-center select-none overflow-x-auto pb-2 pt-2">
+                <div class="inline-flex rounded-2xl border border-white/15 bg-black/35 p-3 md:p-4 shadow-2xl gap-3">
+                    <button data-note="C4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">C4</button>
+                    <button data-note="D4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">D4</button>
+                    <button data-note="E4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">E4</button>
+                    <button data-note="F4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">F4</button>
+                    <button data-note="G4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">G4</button>
+                    <button data-note="A4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">A4</button>
+                    <button data-note="B4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">B4</button>
+                    <button data-note="C5" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">C5</button>
                 </div>
             </div>
-            <div id="piano-key-display" class="h-6 text-sm font-semibold text-purple-600 opacity-90 italic">Press any key above to start playing!</div>
+            <div id="piano-key-display" class="h-6 text-xs tracking-wider font-semibold text-purple-400 opacity-80 italic">Select any key to play a frequency</div>
         </section>
 
         <!-- Interactive 3D Gift Box Section -->
         <section class="max-w-2xl mx-auto text-center space-y-8">
-            <h2 class="text-3xl font-extrabold tracking-tight">Open Your Secret Gift! 🎁</h2>
+            <h2 class="text-3xl font-extrabold tracking-tight font-display uppercase">Reveal Your Secret Surprises 🎁</h2>
             <p class="text-sm opacity-80 max-w-md mx-auto">
-                A special birthday is incomplete without surprises. Tap the shiny box below to read a beautiful personalized letter.
+                Open the luxury container below to reveal your personalized wishing letter.
             </p>
 
             <div class="relative flex flex-col items-center justify-center min-h-[300px]">
-                <div id="gift-box-wrapper" class="relative w-64 h-64 cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-300 z-20">
+                <div id="gift-box-wrapper" class="relative w-60 h-60 cursor-pointer transform hover:scale-[1.03] active:scale-95 transition-all duration-300 z-20">
                     <!-- Lid of Gift Box -->
-                    <div id="gift-lid" class="absolute top-10 left-0 w-full h-12 bg-rose-600 rounded-t-lg shadow-md z-30 flex justify-center items-center">
-                        <div class="w-8 h-full bg-yellow-400"></div>
-                        <div class="absolute -top-6 w-16 h-8 flex justify-between z-40">
-                            <div class="w-8 h-8 bg-yellow-400 rounded-full border border-yellow-500 transform -rotate-45"></div>
-                            <div class="w-8 h-8 bg-yellow-400 rounded-full border border-yellow-500 transform rotate-45"></div>
+                    <div id="gift-lid" class="absolute top-10 left-0 w-full h-12 bg-rose-700 rounded-t-xl shadow-md z-30 flex justify-center items-center border-b border-black/10">
+                        <div class="w-7 h-full bg-amber-400"></div>
+                        <!-- Sleek modern bow knot design -->
+                        <div class="absolute -top-4 w-12 h-6 flex justify-between z-40">
+                            <div class="w-6 h-6 bg-amber-400 rounded-full border border-amber-500 transform -rotate-45 shadow-sm"></div>
+                            <div class="w-6 h-6 bg-amber-400 rounded-full border border-amber-500 transform rotate-45 shadow-sm"></div>
                         </div>
                     </div>
 
-                    <!-- Body of Gift Box -->
-                    <div id="gift-body" class="absolute bottom-10 left-2 w-[94%] h-40 bg-rose-500 rounded-b-xl shadow-2xl z-20 flex justify-center overflow-hidden">
-                        <div class="w-8 h-full bg-yellow-400 shadow-inner"></div>
+                    <!-- Body of Gift Box (Sleek minimalist container) -->
+                    <div id="gift-body" class="absolute bottom-10 left-1.5 w-[95%] h-36 bg-rose-600 rounded-b-xl shadow-2xl z-20 flex justify-center overflow-hidden">
+                        <div class="w-7 h-full bg-amber-400 shadow-inner"></div>
                     </div>
 
-                    <div class="absolute inset-0 bg-yellow-400/20 blur-2xl rounded-full scale-125 -z-10 animate-pulse"></div>
+                    <div class="absolute inset-0 bg-amber-400/10 blur-3xl rounded-full scale-125 -z-10 animate-pulse"></div>
                 </div>
 
-                <!-- Hidden Greeting Card -->
-                <div id="secret-card" class="hidden max-w-lg w-full p-8 rounded-3xl bg-white text-gray-800 shadow-2xl border-4 border-yellow-400 transform scale-50 opacity-0 transition-all duration-700 z-10 absolute">
-                    <div class="text-right text-sm font-semibold text-gray-400 mb-2">⭐ Secret Birthday Card</div>
-                    <div class="text-center space-y-4">
-                        <span class="text-6xl select-none">🎈</span>
-                        <h3 class="text-3xl font-extrabold text-pink-600 font-cursive">A Special Wish For You</h3>
+                <!-- Hidden Premium Greeting Card -->
+                <div id="secret-card" class="hidden max-w-md w-full p-8 rounded-3xl bg-neutral-900 text-white shadow-2xl border border-white/10 transform scale-50 opacity-0 transition-all duration-700 z-10 absolute">
+                    <div class="text-right text-[10px] font-bold tracking-widest text-gray-500 mb-4 uppercase font-interface">⭐ Personal Note</div>
+                    <div class="text-center space-y-6">
+                        <!-- Custom star SVG replaces raw emoji balloon -->
+                        <svg class="w-12 h-12 text-amber-400 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
                         
-                        <p class="text-gray-600 italic leading-relaxed text-base" id="card-personalized-msg">
-                            "May your journey ahead be beautiful, bright, and packed with wonderful discoveries. You are a treasure, and your presence in this world is highly celebrated."
+                        <h3 class="text-2xl font-bold tracking-wide uppercase font-display">A Dedicated Wish</h3>
+                        
+                        <p class="text-gray-300 italic leading-relaxed text-sm md:text-base border-y border-white/5 py-4" id="card-personalized-msg">
+                            "May your journey ahead be beautiful, bright, and packed with wonderful discoveries."
                         </p>
 
-                        <div class="border-t border-dashed border-gray-200 my-4 pt-4">
-                            <p class="text-sm font-bold text-gray-500">With lots of love, smiles, and cake ✨</p>
+                        <div class="pt-2 font-interface">
+                            <p class="text-xs font-semibold tracking-wider uppercase text-gray-400">Warmest regards & cheers ✨</p>
                         </div>
 
-                        <button id="close-card-btn" class="px-6 py-2 bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-bold rounded-full shadow-lg transition-all text-sm cursor-pointer">
+                        <button id="close-card-btn" class="font-interface px-6 py-2.5 bg-white text-black hover:bg-neutral-200 active:scale-95 font-bold rounded-xl shadow-lg transition-all text-xs tracking-wider uppercase cursor-pointer">
                             Close Card
                         </button>
                     </div>
@@ -376,37 +421,37 @@
 
         <!-- Guests Wishing Wall Section -->
         <section class="space-y-8">
-            <div class="text-center space-y-2">
-                <h2 class="text-3xl font-extrabold tracking-tight">The Digital Wishes Board 📝</h2>
+            <div class="text-center space-y-3">
+                <h2 class="text-3xl font-extrabold tracking-tight font-display uppercase">Digital Messages Board 📝</h2>
                 <p class="text-sm opacity-80 max-w-md mx-auto">
-                    Leave a delightful message or sweet birthday wish for <span class="font-bold underline text-pink-600" id="wishes-for-name">Star</span> directly on this wall! (Saved globally for everyone to see)
+                    Leave a thoughtful birthday wish for <span class="font-bold underline text-pink-500" id="wishes-for-name">Star</span> on this collaborative wall.
                 </p>
             </div>
 
-            <!-- Form to Post a New Wish -->
-            <div class="theme-glass-card rounded-2xl p-6 max-w-xl mx-auto shadow-lg">
-                <form id="wish-form" class="space-y-4">
+            <!-- Form to Post a New Wish (Dark premium design) -->
+            <div class="theme-glass-card rounded-3xl p-8 max-w-xl mx-auto shadow-lg">
+                <form id="wish-form" class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider mb-1 opacity-85">Your Name</label>
-                            <input type="text" id="wish-author" required placeholder="Friend's Name" class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-inherit placeholder:text-inherit/50 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm">
+                            <label class="block text-2xs font-bold uppercase tracking-wider mb-2 font-interface opacity-80">Your Name</label>
+                            <input type="text" id="wish-author" required placeholder="Guest Name" class="w-full px-4 py-2.5 bg-black/25 border border-white/10 rounded-xl text-inherit placeholder:text-inherit/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-interface">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider mb-1 opacity-85">Note Color</label>
-                            <select id="wish-color" class="w-full px-4 py-2 bg-white/20 border border-white/20 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm">
-                                <option value="bg-amber-100 text-amber-900 border-amber-300">💡 Canary Yellow</option>
-                                <option value="bg-pink-100 text-pink-900 border-pink-300">🌸 Cherry Blossom</option>
-                                <option value="bg-cyan-100 text-cyan-900 border-cyan-300">💎 Ocean Blue</option>
-                                <option value="bg-emerald-100 text-emerald-900 border-emerald-300">🍃 Mint Green</option>
-                                <option value="bg-purple-100 text-purple-900 border-purple-300">🍇 Lavender</option>
+                            <label class="block text-2xs font-bold uppercase tracking-wider mb-2 font-interface opacity-80">Note Theme</label>
+                            <select id="wish-color" class="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-interface">
+                                <option value="bg-white/5 border-amber-500/40 text-amber-100 shadow-amber-500/5">💡 Champagne Gold</option>
+                                <option value="bg-white/5 border-pink-500/40 text-pink-100 shadow-pink-500/5">🌸 Neon Rose</option>
+                                <option value="bg-white/5 border-cyan-500/40 text-cyan-100 shadow-cyan-500/5">💎 Cyber Blue</option>
+                                <option value="bg-white/5 border-emerald-500/40 text-emerald-100 shadow-emerald-500/5">🍃 Emerald Sage</option>
+                                <option value="bg-white/5 border-purple-500/40 text-purple-100 shadow-purple-500/5">🍇 Royal Violet</option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider mb-1 opacity-85">Your Sweet Message</label>
-                        <textarea id="wish-text" required rows="2" placeholder="Wishing you a fabulous year filled with wonderful adventures..." class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-inherit placeholder:text-inherit/50 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"></textarea>
+                        <label class="block text-2xs font-bold uppercase tracking-wider mb-2 font-interface opacity-80">Your Special Note</label>
+                        <textarea id="wish-text" required rows="2" placeholder="Wishing you a marvelous year ahead, full of growth and beautiful moments..." class="w-full px-4 py-2.5 bg-black/25 border border-white/10 rounded-xl text-inherit placeholder:text-inherit/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-interface"></textarea>
                     </div>
-                    <button type="submit" class="w-full py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-extrabold rounded-lg shadow-md active:scale-95 transition-all text-sm cursor-pointer">
+                    <button type="submit" class="font-interface w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-md active:scale-95 transition-all text-xs tracking-wider uppercase cursor-pointer">
                         Pin Message to Wall 📌
                     </button>
                 </form>

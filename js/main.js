@@ -49,12 +49,12 @@ class ConfettiParticle {
   constructor() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * -canvas.height;
-    this.size = Math.random() * 8 + 5;
-    this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
-    this.speedY = Math.random() * 3 + 2;
-    this.speedX = Math.random() * 2 - 1;
+    this.size = Math.random() * 8 + 4;
+    this.color = `hsl(${Math.random() * 360}, 85%, 65%)`;
+    this.speedY = Math.random() * 2.5 + 1.5;
+    this.speedX = Math.random() * 1.5 - 0.75;
     this.rotation = Math.random() * 360;
-    this.rotationSpeed = Math.random() * 3 - 1.5;
+    this.rotationSpeed = Math.random() * 2 - 1;
   }
 
   update() {
@@ -86,10 +86,10 @@ class Balloon {
   reset() {
     this.x = Math.random() * (canvas.width - 80) + 40;
     this.y = canvas.height + 100;
-    this.radius = Math.random() * 25 + 25;
-    this.speedY = Math.random() * 1.5 + 0.8;
-    this.color = `hsl(${Math.random() * 360}, 85%, 65%)`;
-    this.drift = Math.random() * 0.5 - 0.25;
+    this.radius = Math.random() * 20 + 20; // slightly smaller, more refined balloons
+    this.speedY = Math.random() * 1.2 + 0.6;
+    this.color = `hsl(${Math.random() * 360}, 75%, 60%)`;
+    this.drift = Math.random() * 0.4 - 0.2;
     this.popped = false;
     this.popParticles = [];
   }
@@ -138,22 +138,22 @@ class Balloon {
 
     ctx.beginPath();
     ctx.ellipse(this.x - this.radius * 0.3, this.y - this.radius * 0.4, this.radius * 0.2, this.radius * 0.3, Math.PI/6, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
     ctx.fill();
 
     ctx.beginPath();
     ctx.moveTo(this.x, this.y + this.radius);
-    ctx.lineTo(this.x - 6, this.y + this.radius + 8);
-    ctx.lineTo(this.x + 6, this.y + this.radius + 8);
+    ctx.lineTo(this.x - 4, this.y + this.radius + 6);
+    ctx.lineTo(this.x + 4, this.y + this.radius + 6);
     ctx.closePath();
     ctx.fillStyle = this.color;
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(this.x, this.y + this.radius + 8);
-    ctx.bezierCurveTo(this.x - 10, this.y + this.radius + 30, this.x + 10, this.y + this.radius + 50, this.x, this.y + this.radius + 70);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.lineWidth = 1.5;
+    ctx.moveTo(this.x, this.y + this.radius + 6);
+    ctx.bezierCurveTo(this.x - 8, this.y + this.radius + 20, this.x + 8, this.y + this.radius + 35, this.x, this.y + this.radius + 50);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 1.2;
     ctx.stroke();
 
     ctx.restore();
@@ -183,13 +183,13 @@ class Balloon {
 
     for (let i = 0; i < 15; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 4 + 2;
+      const speed = Math.random() * 3 + 1.5;
       this.popParticles.push({
         x: this.x,
         y: this.y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        size: Math.random() * 4 + 2,
+        size: Math.random() * 3 + 1.5,
         alpha: 1.0,
         r: r,
         g: g,
@@ -203,16 +203,16 @@ class SmokeParticle {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.size = Math.random() * 3 + 2;
-    this.vx = Math.random() * 0.8 - 0.4;
-    this.vy = -(Math.random() * 1.2 + 0.5);
+    this.size = Math.random() * 2.5 + 1.5;
+    this.vx = Math.random() * 0.6 - 0.3;
+    this.vy = -(Math.random() * 1.0 + 0.4);
     this.alpha = 1.0;
   }
 
   update() {
     this.x += this.vx;
     this.y += this.vy;
-    this.alpha -= 0.015;
+    this.alpha -= 0.012;
   }
 
   draw() {
@@ -220,7 +220,7 @@ class SmokeParticle {
     ctx.globalAlpha = this.alpha;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(100, 100, 100, 0.4)";
+    ctx.fillStyle = "rgba(180, 180, 180, 0.35)";
     ctx.fill();
     ctx.restore();
   }
@@ -287,7 +287,7 @@ function playHappyBirthdayMelody() {
 window.addEventListener('mousemove', (e) => {
   const particle = document.createElement('div');
   particle.className = 'sparkle-particle';
-  const size = Math.random() * 8 + 4;
+  const size = Math.random() * 6 + 3;
   particle.style.width = `${size}px`;
   particle.style.height = `${size}px`;
   particle.style.left = `${e.clientX - size/2}px`;
@@ -308,11 +308,11 @@ function showToast(message, colorClass = 'pink') {
   if (!container) return;
 
   const toast = document.createElement('div');
-  toast.className = `p-4 rounded-xl shadow-lg border border-white/20 text-white backdrop-blur-md transition-all duration-500 translate-y-5 opacity-0 flex items-center gap-3`;
+  toast.className = `p-4 rounded-xl shadow-lg border border-white/10 text-white backdrop-blur-md transition-all duration-500 translate-y-5 opacity-0 flex items-center gap-3 text-xs uppercase font-interface tracking-wider`;
   
   if (colorClass === 'pink') toast.style.backgroundColor = 'rgba(236, 72, 153, 0.85)';
-  else if (colorClass === 'purple') toast.style.backgroundColor = 'rgba(139, 92, 246, 0.85)';
-  else if (colorClass === 'amber') toast.style.backgroundColor = 'rgba(245, 158, 11, 0.85)';
+  else if (colorClass === 'purple') toast.style.backgroundColor = 'rgba(124, 58, 237, 0.85)';
+  else if (colorClass === 'amber') toast.style.backgroundColor = 'rgba(217, 119, 6, 0.85)';
   else toast.style.backgroundColor = 'rgba(16, 185, 129, 0.85)';
 
   toast.innerHTML = `<span>✨</span> <b>${message}</b>`;
@@ -342,7 +342,7 @@ canvas.addEventListener('mousedown', (e) => {
         window.BirthdayAudio.playTone(523.25, 0.15, 'triangle', 0.1); // C5
         setTimeout(() => window.BirthdayAudio.playTone(659.25, 0.1, 'sine', 0.08), 60); // E5
       }
-      showToast("🎈 POP! Make this birthday magical!", "pink");
+      showToast("🎈 POP! Unleash the celebration!", "pink");
     }
   });
 });
@@ -386,12 +386,12 @@ function syncData() {
       
       const berrySpanList = document.querySelectorAll('.topping-berry');
       berrySpanList.forEach(el => {
-        el.style.display = berries ? 'inline-block' : 'none';
+        el.style.display = berries ? 'flex' : 'none';
       });
     }
   });
 
-  // Setup guest wishes listener
+  // Setup guest wishes listener (translucent glassmorphic notes)
   const wishesQuery = query(collection(db, "guestbook_wishes"), orderBy("timestamp", "asc"));
   onSnapshot(wishesQuery, (snapshot) => {
     const wallGrid = document.getElementById('wishes-wall-grid');
@@ -400,13 +400,24 @@ function syncData() {
     snapshot.forEach(docSnap => {
       const note = docSnap.data();
       const noteCard = document.createElement('div');
-      noteCard.className = `p-5 rounded-2xl border shadow-md transform rotate-${Math.random() > 0.5 ? '1' : '-1'} transition-transform hover:rotate-0 duration-300 ${note.color || 'bg-amber-100 text-amber-900 border-amber-300'}`;
+      
+      // Sophisticated glass card with matching glowing borders
+      let colorClass = 'bg-white/5 border-zinc-700/30 text-white/90 shadow-sm';
+      if (note.color) {
+        if (note.color.includes('amber')) colorClass = 'bg-white/5 border-amber-500/30 text-amber-100 shadow-amber-500/5';
+        else if (note.color.includes('pink')) colorClass = 'bg-white/5 border-pink-500/30 text-pink-100 shadow-pink-500/5';
+        else if (note.color.includes('cyan')) colorClass = 'bg-white/5 border-cyan-500/30 text-cyan-100 shadow-cyan-500/5';
+        else if (note.color.includes('emerald')) colorClass = 'bg-white/5 border-emerald-500/30 text-emerald-100 shadow-emerald-500/5';
+        else if (note.color.includes('purple')) colorClass = 'bg-white/5 border-purple-500/30 text-purple-100 shadow-purple-500/5';
+      }
+
+      noteCard.className = `p-6 rounded-2xl border backdrop-blur-md transition-all duration-300 hover:scale-[1.02] ${colorClass}`;
       noteCard.innerHTML = `
-        <div class="flex justify-between items-center mb-2 border-b border-black/10 pb-1">
-          <span class="font-bold text-xs uppercase tracking-wider">📌 ${note.author}</span>
-          <span class="text-xs opacity-65">Sticky Note</span>
+        <div class="flex justify-between items-center mb-3 border-b border-white/10 pb-1.5 font-interface">
+          <span class="font-bold text-2xs uppercase tracking-wider">📌 ${note.author}</span>
+          <span class="text-[9px] uppercase tracking-wider font-semibold opacity-50">Dedication</span>
         </div>
-        <p class="font-game text-sm leading-relaxed">${note.text}</p>
+        <p class="text-xs md:text-sm leading-relaxed">${note.text}</p>
       `;
       wallGrid.appendChild(noteCard);
     });
@@ -419,20 +430,20 @@ function setCakeFrostingStyle(flavor) {
   if (!topLayer || !toppings) return;
 
   if (flavor === 'chocolate') {
-    topLayer.style.background = 'linear-gradient(to right, #451a03 0%, #78350f 30%, #451a03 70%, #78350f 100%)';
-    topLayer.style.borderColor = 'rgba(69, 26, 3, 0.4)';
-    toppings.style.background = 'linear-gradient(to right, #78350f, #92400e)';
+    topLayer.style.background = 'linear-gradient(to right, #1c1917 0%, #292524 30%, #1c1917 70%, #292524 100%)';
+    topLayer.style.borderColor = 'rgba(28, 25, 23, 0.4)';
+    toppings.style.background = 'linear-gradient(to right, #292524, #3e3a39)';
   } else if (flavor === 'matcha') {
-    topLayer.style.background = 'linear-gradient(to right, #064e3b 0%, #059669 30%, #064e3b 70%, #059669 100%)';
-    topLayer.style.borderColor = 'rgba(6, 78, 59, 0.4)';
-    toppings.style.background = 'linear-gradient(to right, #059669, #10b981)';
+    topLayer.style.background = 'linear-gradient(to right, #022c22 0%, #065f46 30%, #022c22 70%, #065f46 100%)';
+    topLayer.style.borderColor = 'rgba(2, 44, 34, 0.4)';
+    toppings.style.background = 'linear-gradient(to right, #065f46, #0f766e)';
   } else if (flavor === 'vanilla') {
-    topLayer.style.background = 'linear-gradient(to right, #fef08a 0%, #fef3c7 30%, #fef08a 70%, #fef3c7 100%)';
-    topLayer.style.borderColor = 'rgba(234, 179, 8, 0.4)';
-    toppings.style.background = 'linear-gradient(to right, #fef9c3, #fef08a)';
+    topLayer.style.background = 'linear-gradient(to right, #fcfaf2 0%, #f4f1ea 30%, #fcfaf2 70%, #f4f1ea 100%)';
+    topLayer.style.borderColor = 'rgba(212, 163, 115, 0.3)';
+    toppings.style.background = 'linear-gradient(to right, #f4f1ea, #e9e5db)';
   } else {
-    // strawberry
-    topLayer.style.background = 'linear-gradient(to right, #ec4899 0%, #f472b6 30%, #ec4899 70%, #f472b6 100%)';
+    // strawberry matte rose
+    topLayer.style.background = 'linear-gradient(to right, #db2777 0%, #e879f9 30%, #db2777 70%, #e879f9 100%)';
     topLayer.style.borderColor = 'rgba(219, 39, 119, 0.4)';
     toppings.style.background = 'linear-gradient(to right, #fce7f3, #fbcfe8)';
   }
@@ -468,7 +479,7 @@ pianoKeys.forEach(btn => {
     if (window.BirthdayAudio) {
       window.BirthdayAudio.playTone(freq, 0.6, 'triangle', 0.15);
       const display = document.getElementById('piano-key-display');
-      display.textContent = `🎵 Played note: ${note} (${freq} Hz)`;
+      display.textContent = `🎵 Active Note: ${note} (${freq} Hz)`;
     }
   });
 });
