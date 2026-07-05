@@ -30,8 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const sprinklesToggle = document.getElementById('sprinkles-toggle');
   const berriesToggle = document.getElementById('berries-toggle');
   const hbdMessageInput = document.getElementById('hbd-message-input');
+  const giftMessageInput = document.getElementById('gift-message-input');
   
   const hbdCount = document.getElementById('hbd-count');
+  const giftCount = document.getElementById('gift-count');
   const saveStatus = document.getElementById('save-status');
   const saveBtn = document.getElementById('save-btn');
   
@@ -138,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sprinklesToggle.checked = config.sprinkles !== false;
     berriesToggle.checked = config.berries !== false;
     hbdMessageInput.value = config.hbdMessage || '';
+    giftMessageInput.value = config.giftMessage || '';
     
     // Select appropriate gender/theme radio
     const genderRadios = document.getElementsByName('gender');
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Track when user starts/stops editing to avoid real-time overwrite conflicts
-  const editableInputs = [recipientNameInput, recipientAgeInput, hbdMessageInput];
+  const editableInputs = [recipientNameInput, recipientAgeInput, hbdMessageInput, giftMessageInput];
   let editTimeout = null;
 
   editableInputs.forEach(input => {
@@ -188,9 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Character Count Helpers
   function updateCharCounts() {
     hbdCount.textContent = hbdMessageInput.value.length;
+    giftCount.textContent = giftMessageInput.value.length;
   }
 
   hbdMessageInput.addEventListener('input', updateCharCounts);
+  giftMessageInput.addEventListener('input', updateCharCounts);
 
   // Form Submission - Writes to Firestore, which triggers onSnapshot on ALL devices
   configForm.addEventListener('submit', async (e) => {
@@ -209,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sprinkles: sprinklesToggle.checked,
       berries: berriesToggle.checked,
       hbdMessage: hbdMessageInput.value.trim(),
-      warmMessage: hbdMessageInput.value.trim(),
+      giftMessage: giftMessageInput.value.trim(),
       lastUpdated: new Date().toISOString()
     };
 

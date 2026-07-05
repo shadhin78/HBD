@@ -25,6 +25,7 @@ const db = getFirestore(app);
 let userName = "Star";
 let userAge = "21";
 let userMsg = "Wishing you a day filled with laughter, love, cake, and endless magic. Happy Birthday!";
+let giftMsg = "May your journey ahead be beautiful, bright, and packed with wonderful discoveries. You are a treasure, and your presence in this world is highly celebrated.";
 let activeTheme = "pastel";
 let micEnabled = false;
 let micStream = null;
@@ -272,6 +273,7 @@ function syncData() {
       userName = data.name || "Star";
       userAge = data.age || "21";
       userMsg = data.hbdMessage || "Wishing you a day filled with laughter, love, cake, and endless magic. Happy Birthday!";
+      giftMsg = data.giftMessage || "May your journey ahead be beautiful, bright, and packed with wonderful discoveries. You are a treasure, and your presence in this world is highly celebrated.";
       activeTheme = data.gender || "pastel";
 
       // Update UI texts instantly
@@ -577,7 +579,7 @@ if (giftWrapper && giftLid && secretCard) {
     setTimeout(() => {
       secretCard.classList.remove('hidden');
       const cardMsg = document.getElementById('card-personalized-msg');
-      if (cardMsg) cardMsg.textContent = `"${userMsg}"`;
+      if (cardMsg) cardMsg.textContent = `"${giftMsg}"`;
       setTimeout(() => {
         secretCard.classList.remove('scale-50', 'opacity-0');
         secretCard.classList.add('scale-100', 'opacity-100');
