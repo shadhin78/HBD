@@ -336,34 +336,6 @@
             </button>
         </section>
 
-        <!-- Interactive Synthesizer Section -->
-        <section class="theme-glass-card rounded-3xl p-8 md:p-12 max-w-2xl mx-auto text-center space-y-6 relative overflow-hidden shadow-2xl">
-            <div class="absolute top-3 left-3 px-3 py-1 text-2xs tracking-widest font-bold uppercase bg-white/10 rounded-full border border-white/10 font-interface">
-                Melody Deck 🎹
-            </div>
-            
-            <div class="space-y-2 pt-6">
-                <h3 class="text-2xl font-extrabold tracking-tight font-display uppercase">Interactive Synthesizer</h3>
-                <p class="text-xs opacity-80 max-w-md mx-auto">
-                    Play a celebration tone. Keys: <b class="font-bold underline text-pink-500">C4 - C4 - D4 - C4 - F4 - E4</b> for Happy Birthday.
-                </p>
-            </div>
-
-            <!-- Futuristic Glowing Pad Deck (Replaces toy keyboard) -->
-            <div class="flex justify-center select-none overflow-x-auto pb-2 pt-2">
-                <div class="inline-flex rounded-2xl border border-white/15 bg-black/35 p-3 md:p-4 shadow-2xl gap-3">
-                    <button data-note="C4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">C4</button>
-                    <button data-note="D4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">D4</button>
-                    <button data-note="E4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">E4</button>
-                    <button data-note="F4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">F4</button>
-                    <button data-note="G4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">G4</button>
-                    <button data-note="A4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">A4</button>
-                    <button data-note="B4" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">B4</button>
-                    <button data-note="C5" class="piano-key w-12 h-32 bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 rounded-xl font-bold flex flex-col justify-end items-center pb-4 text-2xs text-white/80 transition-all duration-150">C5</button>
-                </div>
-            </div>
-            <div id="piano-key-display" class="h-6 text-xs tracking-wider font-semibold text-purple-400 opacity-80 italic">Select any key to play a frequency</div>
-        </section>
 
         <!-- Interactive 3D Gift Box Section -->
         <section class="max-w-2xl mx-auto text-center space-y-8">
@@ -372,96 +344,56 @@
                 Open the luxury container below to reveal your personalized wishing letter.
             </p>
 
-            <div class="relative flex flex-col items-center justify-center min-h-[300px]">
-                <div id="gift-box-wrapper" class="relative w-60 h-60 cursor-pointer transform hover:scale-[1.03] active:scale-95 transition-all duration-300 z-20">
+            <div class="relative flex flex-col items-center justify-center min-h-[350px]">
+                <!-- Gift Box (clickable) -->
+                <div id="gift-box-wrapper" class="relative w-60 h-60 cursor-pointer transform hover:scale-[1.03] active:scale-95 transition-all duration-300" style="z-index: 20;">
                     <!-- Lid of Gift Box -->
-                    <div id="gift-lid" class="absolute top-10 left-0 w-full h-12 bg-rose-700 rounded-t-xl shadow-md z-30 flex justify-center items-center border-b border-black/10">
+                    <div id="gift-lid" class="absolute top-10 left-0 w-full h-12 bg-rose-700 rounded-t-xl shadow-md flex justify-center items-center border-b border-black/10" style="z-index: 30;">
                         <div class="w-7 h-full bg-amber-400"></div>
                         <!-- Sleek modern bow knot design -->
-                        <div class="absolute -top-4 w-12 h-6 flex justify-between z-40">
+                        <div class="absolute -top-4 w-12 h-6 flex justify-between" style="z-index: 40;">
                             <div class="w-6 h-6 bg-amber-400 rounded-full border border-amber-500 transform -rotate-45 shadow-sm"></div>
                             <div class="w-6 h-6 bg-amber-400 rounded-full border border-amber-500 transform rotate-45 shadow-sm"></div>
                         </div>
                     </div>
 
-                    <!-- Body of Gift Box (Sleek minimalist container) -->
-                    <div id="gift-body" class="absolute bottom-10 left-1.5 w-[95%] h-36 bg-rose-600 rounded-b-xl shadow-2xl z-20 flex justify-center overflow-hidden">
+                    <!-- Body of Gift Box -->
+                    <div id="gift-body" class="absolute bottom-10 left-1.5 w-[95%] h-36 bg-rose-600 rounded-b-xl shadow-2xl flex justify-center overflow-hidden" style="z-index: 20;">
                         <div class="w-7 h-full bg-amber-400 shadow-inner"></div>
                     </div>
 
                     <div class="absolute inset-0 bg-amber-400/10 blur-3xl rounded-full scale-125 -z-10 animate-pulse"></div>
                 </div>
 
-                <!-- Hidden Premium Greeting Card -->
-                <div id="secret-card" class="hidden max-w-md w-full p-8 rounded-3xl bg-neutral-900 text-white shadow-2xl border border-white/10 transform scale-50 opacity-0 transition-all duration-700 z-10 absolute">
-                    <div class="text-right text-[10px] font-bold tracking-widest text-gray-500 mb-4 uppercase font-interface">⭐ Personal Note</div>
-                    <div class="text-center space-y-6">
-                        <!-- Custom star SVG replaces raw emoji balloon -->
-                        <svg class="w-12 h-12 text-amber-400 mx-auto" viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                        </svg>
-                        
-                        <h3 class="text-2xl font-bold tracking-wide uppercase font-display">A Dedicated Wish</h3>
-                        
-                        <p class="text-gray-300 italic leading-relaxed text-sm md:text-base border-y border-white/5 py-4" id="card-personalized-msg">
-                            "May your journey ahead be beautiful, bright, and packed with wonderful discoveries."
-                        </p>
+                <!-- Hidden Premium Greeting Card — OUTSIDE the gift wrapper, ABOVE it in z-index -->
+                <div id="secret-card" class="hidden max-w-md w-full p-8 rounded-3xl bg-neutral-900 text-white shadow-2xl border border-white/10 transform scale-50 opacity-0 transition-all duration-700 absolute inset-0 m-auto flex items-center justify-center" style="z-index: 50; max-height: 420px;">
+                    <div class="w-full">
+                        <div class="text-right text-[10px] font-bold tracking-widest text-gray-500 mb-4 uppercase font-interface">⭐ Personal Note</div>
+                        <div class="text-center space-y-6">
+                            <svg class="w-12 h-12 text-amber-400 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                            
+                            <h3 class="text-2xl font-bold tracking-wide uppercase font-display">A Dedicated Wish</h3>
+                            
+                            <p class="text-gray-300 italic leading-relaxed text-sm md:text-base border-y border-white/5 py-4" id="card-personalized-msg">
+                                "May your journey ahead be beautiful, bright, and packed with wonderful discoveries."
+                            </p>
 
-                        <div class="pt-2 font-interface">
-                            <p class="text-xs font-semibold tracking-wider uppercase text-gray-400">Warmest regards & cheers ✨</p>
+                            <div class="pt-2 font-interface">
+                                <p class="text-xs font-semibold tracking-wider uppercase text-gray-400">Warmest regards & cheers ✨</p>
+                            </div>
+
+                            <button id="close-card-btn" class="font-interface px-6 py-2.5 bg-white text-black hover:bg-neutral-200 active:scale-95 font-bold rounded-xl shadow-lg transition-all text-xs tracking-wider uppercase cursor-pointer">
+                                Close Card
+                            </button>
                         </div>
-
-                        <button id="close-card-btn" class="font-interface px-6 py-2.5 bg-white text-black hover:bg-neutral-200 active:scale-95 font-bold rounded-xl shadow-lg transition-all text-xs tracking-wider uppercase cursor-pointer">
-                            Close Card
-                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Guests Wishing Wall Section -->
-        <section class="space-y-8">
-            <div class="text-center space-y-3">
-                <h2 class="text-3xl font-extrabold tracking-tight font-display uppercase">Digital Messages Board 📝</h2>
-                <p class="text-sm opacity-80 max-w-md mx-auto">
-                    Leave a thoughtful birthday wish for <span class="font-bold underline text-pink-500" id="wishes-for-name">Star</span> on this collaborative wall.
-                </p>
-            </div>
 
-            <!-- Form to Post a New Wish (Dark premium design) -->
-            <div class="theme-glass-card rounded-3xl p-8 max-w-xl mx-auto shadow-lg">
-                <form id="wish-form" class="space-y-5">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-2xs font-bold uppercase tracking-wider mb-2 font-interface opacity-80">Your Name</label>
-                            <input type="text" id="wish-author" required placeholder="Guest Name" class="w-full px-4 py-2.5 bg-black/25 border border-white/10 rounded-xl text-inherit placeholder:text-inherit/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-interface">
-                        </div>
-                        <div>
-                            <label class="block text-2xs font-bold uppercase tracking-wider mb-2 font-interface opacity-80">Note Theme</label>
-                            <select id="wish-color" class="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-interface">
-                                <option value="bg-white/5 border-amber-500/40 text-amber-100 shadow-amber-500/5">💡 Champagne Gold</option>
-                                <option value="bg-white/5 border-pink-500/40 text-pink-100 shadow-pink-500/5">🌸 Neon Rose</option>
-                                <option value="bg-white/5 border-cyan-500/40 text-cyan-100 shadow-cyan-500/5">💎 Cyber Blue</option>
-                                <option value="bg-white/5 border-emerald-500/40 text-emerald-100 shadow-emerald-500/5">🍃 Emerald Sage</option>
-                                <option value="bg-white/5 border-purple-500/40 text-purple-100 shadow-purple-500/5">🍇 Royal Violet</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-2xs font-bold uppercase tracking-wider mb-2 font-interface opacity-80">Your Special Note</label>
-                        <textarea id="wish-text" required rows="2" placeholder="Wishing you a marvelous year ahead, full of growth and beautiful moments..." class="w-full px-4 py-2.5 bg-black/25 border border-white/10 rounded-xl text-inherit placeholder:text-inherit/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-interface"></textarea>
-                    </div>
-                    <button type="submit" class="font-interface w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-md active:scale-95 transition-all text-xs tracking-wider uppercase cursor-pointer">
-                        Pin Message to Wall 📌
-                    </button>
-                </form>
-            </div>
-
-            <!-- Post-it Notes Grid Container -->
-            <div id="wishes-wall-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-4 max-w-4xl mx-auto">
-                <!-- stickies appear here -->
-            </div>
-        </section>
 
     </main>
 
