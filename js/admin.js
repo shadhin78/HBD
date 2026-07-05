@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQclePrRzsnvsZSPF9s3c2pqXzy8gJpNo",
@@ -39,11 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const copyLinkBtn = document.getElementById('copy-link-btn');
   const copySuccess = document.getElementById('copy-success');
 
+  // Live sync status indicator
+  const syncIndicator = document.getElementById('sync-status');
+
   const CORRECT_PASS = 'HBD787898';
   let activePassword = '';
+  let isUserEditing = false; // flag to prevent overwriting while user types
+  let unsubscribeListener = null; // Firestore real-time listener handle
 
   // Setup current website URL for copying
-  const siteUrl = window.location.protocol + '//' + window.location.host + '/' + 'index.html';
+  const siteUrl = window.location.protocol + '//' + window.location.host + '/index.html';
   shareUrlInput.value = siteUrl;
 
   // Check if password already stored in session
@@ -74,13 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
   logoutBtn.addEventListener('click', () => {
     sessionStorage.removeItem('admin_pass');
     activePassword = '';
+    // Unsubscribe from real-time listener on logout
+    if (unsubscribeListener) {
+      unsubscribeListener();
+      unsubscribeListener = null;
+    }
     hideDashboard();
   });
 
   function showDashboard() {
     loginOverlay.classList.add('hidden');
     dashboardContainer.classList.remove('hidden');
-    loadCurrentConfig();
+    startRealtimeSync();
   }
 
   function hideDashboard() {
@@ -90,37 +100,88 @@ document.addEventListener('DOMContentLoaded', () => {
     adminPasswordInput.focus();
   }
 
-  // Load Configuration from Firestore
-  async function loadCurrentConfig() {
-    try {
-      const docRef = doc(db, "birthday_wishes", "global");
-      const docSnap = await getDoc(docRef);
+  // ─── REAL-TIME SYNC with onSnapshot ────────────────────────────────
+  // Instead of a one-time getDoc, we use onSnapshot so the admin dashboard
+  // stays in sync with changes from ANY device in real-time.
+  function startRealtimeSync() {
+    // Clean up any existing listener
+    if (unsubscribeListener) {
+      unsubscribeListener();
+    }
+
+    const docRef = doc(db, "birthday_wishes", "global");
+
+    unsubscribeListener = onSnapshot(docRef, (docSnap) => {
+      // Show sync status
+      updateSyncStatus('synced');
+
       if (docSnap.exists()) {
         const config = docSnap.data();
-        
-        // Populate inputs
-        recipientNameInput.value = config.name || '';
-        recipientAgeInput.value = config.age || '21';
-        cakeFlavorSelect.value = config.cakeFlavor || 'strawberry';
-        sprinklesToggle.checked = config.sprinkles !== false;
-        berriesToggle.checked = config.berries !== false;
-        hbdMessageInput.value = config.hbdMessage || '';
-        
-        // Select appropriate gender radio
-        const genderRadios = document.getElementsByName('gender');
-        for (const radio of genderRadios) {
-          if (radio.value === config.gender) {
-            radio.checked = true;
-            break;
-          }
+
+        // Only auto-populate if the user is NOT actively editing
+        // This prevents jarring overwrites while typing
+        if (!isUserEditing) {
+          populateForm(config);
         }
-        
-        // Trigger character counts
-        updateCharCounts();
       }
-    } catch (error) {
-      console.error('Error loading current configuration:', error);
-      showStatusAlert('Failed to load current settings from Firestore database', 'error');
+    }, (error) => {
+      console.error('Real-time sync error:', error);
+      updateSyncStatus('error');
+      showStatusAlert('⚠️ Lost real-time connection to database. Changes may not sync.', 'error');
+    });
+  }
+
+  function populateForm(config) {
+    recipientNameInput.value = config.name || '';
+    recipientAgeInput.value = config.age || '21';
+    cakeFlavorSelect.value = config.cakeFlavor || 'strawberry';
+    sprinklesToggle.checked = config.sprinkles !== false;
+    berriesToggle.checked = config.berries !== false;
+    hbdMessageInput.value = config.hbdMessage || '';
+    
+    // Select appropriate gender/theme radio
+    const genderRadios = document.getElementsByName('gender');
+    for (const radio of genderRadios) {
+      if (radio.value === config.gender) {
+        radio.checked = true;
+        break;
+      }
+    }
+    
+    // Trigger character counts
+    updateCharCounts();
+  }
+
+  // Track when user starts/stops editing to avoid real-time overwrite conflicts
+  const editableInputs = [recipientNameInput, recipientAgeInput, hbdMessageInput];
+  let editTimeout = null;
+
+  editableInputs.forEach(input => {
+    input.addEventListener('focus', () => {
+      isUserEditing = true;
+      clearTimeout(editTimeout);
+    });
+    input.addEventListener('blur', () => {
+      // Delay clearing the flag so rapid save doesn't conflict
+      editTimeout = setTimeout(() => {
+        isUserEditing = false;
+      }, 2000);
+    });
+  });
+
+  // ─── SYNC STATUS INDICATOR ─────────────────────────────────────────
+  function updateSyncStatus(status) {
+    if (!syncIndicator) return;
+    
+    if (status === 'synced') {
+      syncIndicator.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> Live Sync Active';
+      syncIndicator.className = 'text-xs font-semibold text-emerald-400 flex items-center';
+    } else if (status === 'saving') {
+      syncIndicator.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-2 animate-pulse"></span> Saving...';
+      syncIndicator.className = 'text-xs font-semibold text-amber-400 flex items-center';
+    } else if (status === 'error') {
+      syncIndicator.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-2"></span> Sync Error';
+      syncIndicator.className = 'text-xs font-semibold text-rose-400 flex items-center';
     }
   }
 
@@ -131,12 +192,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   hbdMessageInput.addEventListener('input', updateCharCounts);
 
-  // Form Submission
+  // Form Submission - Writes to Firestore, which triggers onSnapshot on ALL devices
   configForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     setSaveLoading(true);
     showStatusAlert(null); // hide existing alerts
+    updateSyncStatus('saving');
 
     const selectedGenderRadio = document.querySelector('input[name="gender"]:checked');
     const payload = {
@@ -147,16 +209,24 @@ document.addEventListener('DOMContentLoaded', () => {
       sprinkles: sprinklesToggle.checked,
       berries: berriesToggle.checked,
       hbdMessage: hbdMessageInput.value.trim(),
-      warmMessage: hbdMessageInput.value.trim() // store in both
+      warmMessage: hbdMessageInput.value.trim(),
+      lastUpdated: new Date().toISOString()
     };
 
     try {
       const docRef = doc(db, "birthday_wishes", "global");
       await setDoc(docRef, payload);
-      showStatusAlert('🎉 Changes saved successfully! Wishing page updated live.', 'success');
+      
+      // After successful save, clear editing flag so next onSnapshot updates the form
+      isUserEditing = false;
+      clearTimeout(editTimeout);
+
+      showStatusAlert('🎉 Changes saved & synced live across all devices!', 'success');
+      updateSyncStatus('synced');
     } catch (error) {
       console.error('Error submitting config changes to Firestore:', error);
       showStatusAlert('❌ Database error: ' + (error.message || 'Failed to save to Firestore.'), 'error');
+      updateSyncStatus('error');
     } finally {
       setSaveLoading(false);
     }
@@ -168,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (loading) {
       saveBtn.disabled = true;
-      btnText.textContent = 'Saving Changes...';
+      btnText.textContent = 'Syncing Changes...';
       spinner.classList.remove('hidden');
     } else {
       saveBtn.disabled = false;

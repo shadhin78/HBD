@@ -3,194 +3,430 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Birthday Wishing Site</title>
+  <title>Admin Dashboard — Birthday Wisher</title>
+  <meta name="description" content="Admin panel for configuring the interactive birthday wishing experience. Real-time sync across all devices.">
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css">
-  <!-- Tailwind CSS to style checkboxes and flavor selection -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7c3aed">
   <style>
-    /* Retain original theme bg animations */
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #090214 0%, #020005 100%);
-      color: #f8fafc;
-      overflow-x: hidden;
+      background: linear-gradient(135deg, #090214 0%, #0a0118 50%, #020005 100%);
+      color: #f4f4f5;
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .font-title { font-family: 'Outfit', sans-serif; }
+
+    /* ─── LOGIN OVERLAY ────────────────────────────────────────── */
+    .login-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      padding: 1.5rem;
+    }
+    .login-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .login-card {
+      width: 100%; max-width: 420px;
+      background: rgba(24,24,27,0.7);
+      border: 1px solid rgba(167,139,250,0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .login-card h2 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 700; margin: 0.5rem 0; }
+    .login-card p { color: #a1a1aa; font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+    /* ─── FORM CONTROLS ────────────────────────────────────────── */
+    input[type="text"], input[type="password"], input[type="number"],
+    textarea, select {
+      width: 100%;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 12px rgba(167,139,250,0.25);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    select { cursor: pointer; }
+    select option { background: #18181b; color: #fff; }
+
+    label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #a1a1aa; margin-bottom: 6px; }
+
+    /* ─── BUTTONS ───────────────────────────────────────────────── */
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+      border: none; border-radius: 14px;
+      padding: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      color: #fff; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(167,139,250,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(167,139,250,0.4); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px; padding: 10px 18px;
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-weight: 600; font-size: 0.8rem; cursor: pointer;
+      transition: background 0.3s, border-color 0.3s;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
+
+    /* ─── CARD & LAYOUT ────────────────────────────────────────── */
+    .glass-card {
+      background: rgba(24,24,27,0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(167,139,250,0.12);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+    }
+    .dashboard-wrap {
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    .dashboard-wrap.hidden { display: none; }
+
+    .dashboard-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 1.5rem; margin-bottom: 2rem;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-left h1 { font-family: 'Outfit', sans-serif; font-size: 1.7rem; font-weight: 800; }
+    .header-left p { color: #71717a; font-size: 0.8rem; }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 850px) {
+      .dashboard-grid { grid-template-columns: 1.3fr 1fr; }
+    }
+
+    /* ─── THEME RADIO CARDS ────────────────────────────────────── */
+    .theme-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .theme-option { cursor: pointer; }
+    .theme-option input[type="radio"] { display: none; }
+    .theme-option-label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      transition: all 0.3s;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .theme-option input:checked + .theme-option-label {
+      background: rgba(167,139,250,0.1);
+      border-color: #a78bfa;
+      box-shadow: 0 0 10px rgba(167,139,250,0.2);
+    }
+
+    /* ─── CHECKBOX STYLING ─────────────────────────────────────── */
+    .check-row {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #a1a1aa;
+    }
+    .check-row input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: #a78bfa; cursor: pointer;
+    }
+
+    /* ─── STATUS ALERT ─────────────────────────────────────────── */
+    .status-alert {
+      padding: 12px 16px; border-radius: 12px;
+      font-size: 0.85rem; font-weight: 600; text-align: center;
+    }
+    .status-alert.hidden { display: none; }
+    .status-alert.success { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+    .status-alert.error { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+
+    /* ─── SPINNER ──────────────────────────────────────────────── */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .spinner.hidden { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── SHARE LINK ───────────────────────────────────────────── */
+    .share-input-wrap {
+      display: flex; gap: 8px;
+    }
+    .share-input-wrap input { flex: 1; font-size: 0.8rem; color: #a1a1aa; cursor: default; }
+    .share-input-wrap .btn-primary { width: auto; min-width: 90px; padding: 10px 16px; font-size: 0.78rem; }
+
+    /* ─── COPY SUCCESS ─────────────────────────────────────────── */
+    .copy-msg { font-size: 0.8rem; color: #34d399; font-weight: 600; text-align: center; margin-top: 8px; }
+    .copy-msg.hidden { display: none; }
+
+    /* ─── GUIDELINES ───────────────────────────────────────────── */
+    .guide-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .guide-item { display: flex; gap: 12px; align-items: flex-start; }
+    .guide-num {
+      display: flex; justify-content: center; align-items: center;
+      width: 26px; height: 26px; min-width: 26px;
+      background: rgba(167,139,250,0.12); border-radius: 50%;
+      color: #a78bfa; font-size: 0.8rem; font-weight: 700;
+    }
+    .guide-item strong { display: block; font-size: 0.88rem; margin-bottom: 3px; }
+    .guide-item p { font-size: 0.78rem; color: #71717a; line-height: 1.5; }
+
+    /* ─── FORM GROUP ───────────────────────────────────────────── */
+    .form-group { margin-bottom: 1.4rem; }
+    .divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 1.5rem 0; }
+    .char-count { font-size: 0.72rem; color: #71717a; text-align: right; margin-top: 4px; }
+
+    /* ─── SYNC STATUS BADGE ────────────────────────────────────── */
+    .sync-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px;
+      background: rgba(52,211,153,0.08);
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600; color: #34d399;
+    }
+    .sync-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #34d399;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ─── VIEW LIVE LINK ───────────────────────────────────────── */
+    .view-live-link {
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 13px;
+      color: #fff; text-decoration: none;
+      font-weight: 600; font-size: 0.8rem;
+      transition: all 0.3s;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .view-live-link:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #a78bfa;
+      box-shadow: 0 0 12px rgba(167,139,250,0.2);
+    }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .theme-options { grid-template-columns: 1fr; }
+      .dashboard-header { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
-<body class="p-6">
+<body>
 
   <!-- PASSWORD PROTECTION OVERLAY -->
-  <div id="login-overlay" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 px-6">
-    <div class="bg-zinc-900 border border-purple-500/10 rounded-3xl p-8 w-full max-w-md shadow-2xl text-center">
-      <div class="text-4xl mb-4">🔑</div>
-      <h2 class="text-2xl font-bold mb-2">Enter Access Key</h2>
-      <p class="text-gray-400 text-sm mb-6">Access restricted to authorized wishing panel administrators.</p>
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+      <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🔑</div>
+      <h2>Enter Access Key</h2>
+      <p>Access restricted to authorized administrators.</p>
       
-      <form id="login-form" class="space-y-4">
-        <input type="password" id="admin-password" placeholder="Enter key..." required class="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-center text-sm font-semibold tracking-widest" autofocus>
-        <div id="login-error" class="text-rose-500 text-xs font-semibold"></div>
-        <button type="submit" class="w-full py-3 bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg text-sm uppercase tracking-wider">Unlock Panel</button>
+      <form id="login-form">
+        <div class="form-group">
+          <input type="password" id="admin-password" placeholder="Enter key..." required autofocus style="text-align: center; letter-spacing: 0.15em; font-weight: 700;">
+        </div>
+        <div id="login-error" style="color: #f87171; font-size: 0.8rem; font-weight: 600; min-height: 20px; margin-bottom: 10px;"></div>
+        <button type="submit" class="btn-primary">Unlock Panel</button>
       </form>
     </div>
   </div>
 
-  <!-- ADMIN DASHBOARD CONTENT -->
-  <div id="dashboard-container" class="max-w-5xl mx-auto hidden space-y-8 pt-8">
-    <header class="flex items-center justify-between border-b border-zinc-800 pb-6">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl">🎨</span>
+  <!-- DASHBOARD CONTENT -->
+  <div id="dashboard-container" class="dashboard-wrap hidden">
+    <header class="dashboard-header">
+      <div class="header-left">
+        <span style="font-size: 2rem;">🎨</span>
         <div>
-          <h1 class="text-3xl font-extrabold tracking-tight">Wisher Dashboard</h1>
-          <p class="text-gray-400 text-xs uppercase tracking-wider font-semibold opacity-70">Customizing client experience configurations</p>
+          <h1>Wisher Dashboard</h1>
+          <p style="display: flex; align-items: center; gap: 12px;">
+            Configuration panel
+            <span id="sync-status" class="sync-badge"><span class="sync-dot"></span> Connecting...</span>
+          </p>
         </div>
       </div>
-      <button id="logout-btn" class="px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-xl active:scale-95 transition-all text-xs uppercase tracking-wider">Lock Panel</button>
+      <button id="logout-btn" class="btn-secondary">Lock Panel</button>
     </header>
 
-    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <main class="dashboard-grid">
       
       <!-- FORM COLUMN -->
-      <section class="lg:col-span-7">
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-xl space-y-6">
-          <div>
-            <h2 class="text-xl font-bold">Configuration Details</h2>
-            <p class="text-gray-400 text-xs">Alter database records below to update the wishing PWA instantly.</p>
-          </div>
+      <section>
+        <div class="glass-card">
+          <h2 class="font-title" style="font-size: 1.3rem; font-weight: 700; margin-bottom: 4px;">Configuration Details</h2>
+          <p style="color: #71717a; font-size: 0.78rem; margin-bottom: 1.5rem;">Changes sync instantly across all connected devices.</p>
           
-          <form id="config-form" class="space-y-5">
+          <form id="config-form">
             <!-- Recipient Name -->
-            <div class="space-y-1">
-              <label for="recipient-name-input" class="block text-xs font-bold uppercase tracking-wider text-gray-400">Birthday Star's Name</label>
-              <input type="text" id="recipient-name-input" placeholder="e.g., Alex, Alice" required class="w-full px-4 py-2.5 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+            <div class="form-group">
+              <label for="recipient-name-input">Birthday Star's Name</label>
+              <input type="text" id="recipient-name-input" placeholder="e.g., Alex, Alice" required>
             </div>
 
             <!-- Age Input -->
-            <div class="space-y-1">
-              <label for="recipient-age-input" class="block text-xs font-bold uppercase tracking-wider text-gray-400">Age (Years)</label>
-              <input type="number" id="recipient-age-input" placeholder="e.g., 21" min="1" max="150" required class="w-full px-4 py-2.5 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+            <div class="form-group">
+              <label for="recipient-age-input">Age (Years)</label>
+              <input type="number" id="recipient-age-input" placeholder="e.g., 21" min="1" max="150" required>
             </div>
 
             <!-- Theme Style -->
-            <div class="space-y-2">
-              <label class="block text-xs font-bold uppercase tracking-wider text-gray-400">Choose Theme Style</label>
-              <div class="grid grid-cols-2 gap-2">
-                <label class="flex items-center gap-3 p-3 bg-black border border-zinc-800 rounded-xl cursor-pointer hover:bg-zinc-800 transition">
-                  <input type="radio" name="gender" value="pastel" required class="w-4 h-4 text-purple-600 focus:ring-purple-500">
-                  <span class="text-xs font-semibold">🌸 Champagne Rose</span>
+            <div class="form-group">
+              <label>Choose Theme Style</label>
+              <div class="theme-options">
+                <label class="theme-option">
+                  <input type="radio" name="gender" value="pastel" required>
+                  <div class="theme-option-label">🌸 Champagne Rose</div>
                 </label>
-                <label class="flex items-center gap-3 p-3 bg-black border border-zinc-800 rounded-xl cursor-pointer hover:bg-zinc-800 transition">
-                  <input type="radio" name="gender" value="neon" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
-                  <span class="text-xs font-semibold">🌌 Midnight Obsidian</span>
+                <label class="theme-option">
+                  <input type="radio" name="gender" value="neon">
+                  <div class="theme-option-label">🌌 Midnight Obsidian</div>
                 </label>
-                <label class="flex items-center gap-3 p-3 bg-black border border-zinc-800 rounded-xl cursor-pointer hover:bg-zinc-800 transition">
-                  <input type="radio" name="gender" value="gold" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
-                  <span class="text-xs font-semibold">👑 Luxury Gold</span>
+                <label class="theme-option">
+                  <input type="radio" name="gender" value="gold">
+                  <div class="theme-option-label">👑 Luxury Gold</div>
                 </label>
-                <label class="flex items-center gap-3 p-3 bg-black border border-zinc-800 rounded-xl cursor-pointer hover:bg-zinc-800 transition">
-                  <input type="radio" name="gender" value="emerald" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
-                  <span class="text-xs font-semibold">🌲 Deep Sage</span>
+                <label class="theme-option">
+                  <input type="radio" name="gender" value="emerald">
+                  <div class="theme-option-label">🌲 Deep Sage</div>
                 </label>
               </div>
             </div>
 
-            <!-- Cake Customizer options -->
-            <div class="space-y-3 border-t border-zinc-800 pt-4">
-              <label class="block text-xs font-bold uppercase tracking-wider text-gray-400">Cake Design Customizer 🎂</label>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <hr class="divider">
+
+            <!-- Cake Customizer -->
+            <div class="form-group">
+              <label>Cake Design Customizer 🎂</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px;">
                 <div>
-                  <span class="block text-2xs font-bold uppercase tracking-wider text-gray-500 mb-1">Frosting Style</span>
-                  <select id="cake-flavor" class="w-full px-4 py-2.5 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                  <label for="cake-flavor" style="font-size: 0.68rem; color: #52525b;">Frosting Style</label>
+                  <select id="cake-flavor">
                     <option value="strawberry">🍓 Strawberry Matte</option>
                     <option value="chocolate">🍫 Chocolate Glaze</option>
                     <option value="matcha">🍵 Matcha Velvet</option>
                     <option value="vanilla">🍦 Vanilla Cream</option>
                   </select>
                 </div>
-                <div class="flex flex-col justify-center gap-2">
-                  <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-400">
-                    <input type="checkbox" id="sprinkles-toggle" checked class="w-4 h-4 text-purple-600 bg-black border-zinc-800 rounded">
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+                  <label class="check-row">
+                    <input type="checkbox" id="sprinkles-toggle" checked>
                     <span>Add Gold Flakes</span>
                   </label>
-                  <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-400">
-                    <input type="checkbox" id="berries-toggle" checked class="w-4 h-4 text-purple-600 bg-black border-zinc-800 rounded">
+                  <label class="check-row">
+                    <input type="checkbox" id="berries-toggle" checked>
                     <span>Add Macarons & Pearls</span>
                   </label>
                 </div>
               </div>
             </div>
 
+            <hr class="divider">
+
             <!-- Greeting / Personal message -->
-            <div class="space-y-1 border-t border-zinc-800 pt-4">
-              <label for="hbd-message-input" class="block text-xs font-bold uppercase tracking-wider text-gray-400">Personal Wishing Message</label>
-              <textarea id="hbd-message-input" rows="4" placeholder="Enter personalized birthday wish message..." required class="w-full px-4 py-2.5 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm resize-none"></textarea>
-              <div class="text-right text-xs text-gray-500 mt-1"><span id="hbd-count">0</span> chars</div>
+            <div class="form-group">
+              <label for="hbd-message-input">Personal Wishing Message</label>
+              <textarea id="hbd-message-input" rows="4" placeholder="Enter personalized birthday wish message..." required></textarea>
+              <div class="char-count"><span id="hbd-count">0</span> chars</div>
             </div>
 
-            <!-- Status Alert Message -->
-            <div id="save-status" class="p-3 text-sm font-semibold rounded-xl text-center hidden"></div>
+            <!-- Status Alert -->
+            <div id="save-status" class="status-alert hidden"></div>
 
             <!-- Submit Button -->
-            <button type="submit" id="save-btn" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 text-xs uppercase tracking-wider">
+            <button type="submit" id="save-btn" class="btn-primary" style="margin-top: 0.5rem;">
               <span class="btn-text">Save & Publish Changes</span>
-              <span class="spinner hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span class="spinner hidden"></span>
             </button>
           </form>
         </div>
       </section>
 
-      <!-- LIVE PREVIEW & SHARING COLUMN -->
-      <section class="lg:col-span-5 space-y-6">
+      <!-- SHARE & GUIDE COLUMN -->
+      <section style="display: flex; flex-direction: column; gap: 1.5rem;">
         <!-- SHARING LINK CARD -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-xl space-y-4">
-          <h2 class="text-xl font-bold">Share Wishing Page</h2>
-          <p class="text-gray-400 text-xs">Copy the link below and send it to the recipient!</p>
+        <div class="glass-card">
+          <h2 class="font-title" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 4px;">Share Wishing Page</h2>
+          <p style="color: #71717a; font-size: 0.78rem; margin-bottom: 1rem;">Copy the link below and send it to the recipient!</p>
           
-          <div class="flex items-center gap-2 bg-black border border-zinc-800 rounded-xl p-1.5 pl-4">
-            <input type="text" id="share-url" readonly value="http://localhost:3000/index.html" class="bg-transparent border-none text-white focus:outline-none text-xs w-full">
-            <button id="copy-link-btn" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs active:scale-95 transition-all">Copy</button>
+          <div class="share-input-wrap">
+            <input type="text" id="share-url" readonly value="http://localhost:3000/index.html">
+            <button id="copy-link-btn" class="btn-primary">Copy</button>
           </div>
-          <div id="copy-success" class="text-emerald-500 text-xs font-semibold text-center hidden">Link copied to clipboard!</div>
-          
-          <div class="pt-2">
-            <a href="index.html" target="_blank" class="w-full py-3 bg-zinc-800 hover:bg-zinc-750 border border-zinc-700 text-white font-bold rounded-xl active:scale-95 transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider text-center no-underline">
+          <div id="copy-success" class="copy-msg hidden">✅ Link copied to clipboard!</div>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.06); margin-top: 1.2rem; padding-top: 1.2rem;">
+            <a href="index.html" target="_blank" class="view-live-link">
               <span>Open Public Wishing Site</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
           </div>
         </div>
 
-        <!-- QUICK GUIDELINE CARD -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-xl space-y-4">
-          <h2 class="text-xl font-bold">Guidelines</h2>
-          <ul class="space-y-4 text-xs leading-relaxed text-gray-400">
-            <li class="flex gap-3">
-              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold shrink-0">1</span>
+        <!-- GUIDELINES CARD -->
+        <div class="glass-card">
+          <h2 class="font-title" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">How It Works</h2>
+          <ul class="guide-list">
+            <li class="guide-item">
+              <span class="guide-num">1</span>
               <div>
-                <strong class="text-white">Theme Selection</strong>
-                <p class="text-2xs mt-0.5 opacity-80">Choose between Champagne, Midnight Obsidian, Royal Gold, or Deep Sage. Each loads tailored vector elements and animations.</p>
+                <strong>Instant Sync</strong>
+                <p>All changes sync in real-time to every connected browser & device via Firestore onSnapshot listeners. No refresh needed.</p>
               </div>
             </li>
-            <li class="flex gap-3">
-              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold shrink-0">2</span>
+            <li class="guide-item">
+              <span class="guide-num">2</span>
               <div>
-                <strong class="text-white">Minimalist Cake Customizer</strong>
-                <p class="text-2xs mt-0.5 opacity-80">Select frosting style and optional premium add-ons (Gold Flakes or Macarons). Changes update dynamically.</p>
+                <strong>Theme & Cake Customizer</strong>
+                <p>Choose a visual theme and customize cake frosting, gold flakes, and macaron decorations. All updates propagate live.</p>
               </div>
             </li>
-            <li class="flex gap-3">
-              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold shrink-0">3</span>
+            <li class="guide-item">
+              <span class="guide-num">3</span>
               <div>
-                <strong class="text-white">Real-Time Sync</strong>
-                <p class="text-2xs mt-0.5 opacity-80">When you click Save, active wish pages will update instantly on all browsers without refreshing.</p>
+                <strong>Cross-Platform PWA</strong>
+                <p>Installable on Android, iOS, Windows & Mac. Works offline for cached assets, syncs when reconnected.</p>
               </div>
             </li>
           </ul>
