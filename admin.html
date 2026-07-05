@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Admin Dashboard — Birthday Wisher</title>
   <meta name="description" content="Admin panel for configuring the interactive birthday wishing experience. Real-time sync across all devices.">
   <!-- Google Fonts -->
@@ -20,6 +20,8 @@
       color: #f4f4f5;
       min-height: 100vh;
       overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
     }
     .font-title { font-family: 'Outfit', sans-serif; }
 
@@ -108,32 +110,39 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(167,139,250,0.12);
-      border-radius: 24px;
-      padding: 2rem;
+      border-radius: 20px;
+      padding: 1.5rem;
       box-shadow: 0 15px 40px rgba(0,0,0,0.35);
     }
     .dashboard-wrap {
       max-width: 1100px; margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
+      padding: 1.5rem 1rem 4rem;
     }
     .dashboard-wrap.hidden { display: none; }
 
     .dashboard-header {
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding-bottom: 1.5rem; margin-bottom: 2rem;
+      padding-bottom: 1rem; margin-bottom: 1.5rem;
+      flex-wrap: wrap; gap: 10px;
     }
-    .header-left { display: flex; align-items: center; gap: 14px; }
-    .header-left h1 { font-family: 'Outfit', sans-serif; font-size: 1.7rem; font-weight: 800; }
-    .header-left p { color: #71717a; font-size: 0.8rem; }
+    .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .header-left h1 { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; }
+    .header-left p { color: #71717a; font-size: 0.75rem; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
     @media (min-width: 850px) {
       .dashboard-grid { grid-template-columns: 1.3fr 1fr; }
+      .dashboard-wrap { padding: 2rem 1.5rem 4rem; }
+      .dashboard-header { padding-bottom: 1.5rem; margin-bottom: 2rem; }
+      .header-left h1 { font-size: 1.7rem; }
+      .header-left p { font-size: 0.8rem; }
+      .header-left { gap: 14px; }
+      .glass-card { padding: 2rem; }
     }
 
     /* ─── THEME RADIO CARDS ────────────────────────────────────── */
@@ -251,7 +260,23 @@
     /* ─── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 480px) {
       .theme-options { grid-template-columns: 1fr; }
-      .dashboard-header { flex-direction: column; gap: 12px; text-align: center; }
+      .dashboard-header { flex-direction: column; gap: 10px; text-align: center; }
+      .login-card { padding: 1.5rem; }
+      .login-card h2 { font-size: 1.3rem; }
+      .glass-card { border-radius: 16px; padding: 1.2rem; }
+      .btn-primary { padding: 12px; font-size: 0.78rem; border-radius: 12px; }
+      .btn-secondary { padding: 8px 14px; font-size: 0.75rem; }
+      .share-input-wrap { flex-direction: column; }
+      .share-input-wrap .btn-primary { width: 100%; min-width: auto; }
+    }
+
+    /* Safe area for notched phones */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      body {
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
     }
   </style>
 </head>
